@@ -55,3 +55,9 @@
 (setq load-path (cons "~/.emacs.d/elpa/zenburn-theme-20150214.131" load-path))
 (require 'zenburn-theme)
 
+;; highlight current line
+(setq load-path (cons "~/.emacs.d/elpa/highlight-current-line-20051013.1756" load-path))
+(require 'highlight-current-line)
+(highlight-current-line-on t)
+(highlight-current-line-set-bg-color "gray30")
+(highlight-current-line-whole-line-on t)
