@@ -62,6 +62,9 @@
 (highlight-current-line-set-bg-color "gray30")
 (highlight-current-line-whole-line-on t)
 
+;; multiple cursors
+(setq load-path (cons "~/.emacs.d/elpa/multiple-cursors-20150101.1431" load-path))
+
 (add-hook 'c-mode-common-hook (lambda () (interactive)
   (when (fboundp 'c-mode)
     ;; load GNOME utils
