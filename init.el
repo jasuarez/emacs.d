@@ -65,6 +65,7 @@
 ;; multiple cursors
 (setq load-path (cons "~/.emacs.d/elpa/multiple-cursors-20150101.1431" load-path))
 
+;; C Mode
 (add-hook 'c-mode-common-hook (lambda () (interactive)
   (when (fboundp 'c-mode)
     ;; load GNOME utils
@@ -74,5 +75,11 @@
 
     ;; code indexer
     (require 'xcscope)
+  )
+))
+
+(add-hook 'c++-mode-hook (lambda () (interactive)
+  (when (fboundp 'c++-mode)
+    (c-set-style "stroustrup")
   )
 ))
