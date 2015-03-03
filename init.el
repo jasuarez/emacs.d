@@ -33,3 +33,6 @@
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
+;; use zenburn theme
+(setq load-path (cons "~/.emacs.d/elpa/zenburn-theme-20150214.131" load-path))
+(require 'zenburn-theme)
