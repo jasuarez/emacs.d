@@ -78,6 +78,9 @@
 
     ;; show trailing whitespaces
     (setq show-trailing-whitespace t)
+
+    ;; active 'Which Function' mode
+    (which-function-mode t)
   )
 ))
 
