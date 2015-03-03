@@ -61,3 +61,12 @@
 (highlight-current-line-on t)
 (highlight-current-line-set-bg-color "gray30")
 (highlight-current-line-whole-line-on t)
+
+(add-hook 'c-mode-common-hook (lambda () (interactive)
+  (when (fboundp 'c-mode)
+    ;; load GNOME utils
+    (setq load-path (cons "~/.emacs.d/gnome-emacs-utils" load-path))
+    (require 'gnome-emacs-utils)
+    (local-set-key [S-f1] 'devhelp-word-at-point)
+  )
+))

@@ -1,0 +1,3 @@
+[submodule "gnome-emacs-utils"]
+	path = gnome-emacs-utils
+	url = ./gnome-emacs-utils
