@@ -36,6 +36,10 @@
 ;; no backup files
 (setq make-backup-files nil)
 
+;; shortcuts
+(global-set-key [f1] 'goto-line)
+(global-set-key [C-tab] 'hippie-expand)
+
 ;; use zenburn theme
 (setq load-path (cons "~/.emacs.d/elpa/zenburn-theme-20150214.131" load-path))
 (require 'zenburn-theme)
