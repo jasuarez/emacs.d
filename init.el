@@ -75,6 +75,9 @@
 
     ;; code indexer
     (require 'xcscope)
+
+    ;; show trailing whitespaces
+    (setq show-trailing-whitespace t)
   )
 ))
 
