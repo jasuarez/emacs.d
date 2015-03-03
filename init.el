@@ -48,6 +48,9 @@
 ;; whitespaces instead of tabs
 (setq-default indent-tabs-mode nil)
 
+;; move mouse to avoid disturbing
+(mouse-avoidance-mode 'cat-and-mouse)
+
 ;; use zenburn theme
 (setq load-path (cons "~/.emacs.d/elpa/zenburn-theme-20150214.131" load-path))
 (require 'zenburn-theme)
