@@ -44,6 +44,9 @@
 (setq-default ispell-program-name "aspell")
 (setq-default ispell-extra-args '("--reverse"))
 
+;; whitespaces instead of tabs
+(setq-default indent-tabs-mode nil)
+
 ;; use zenburn theme
 (setq load-path (cons "~/.emacs.d/elpa/zenburn-theme-20150214.131" load-path))
 (require 'zenburn-theme)
