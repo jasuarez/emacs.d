@@ -40,6 +40,10 @@
 (global-set-key [f1] 'goto-line)
 (global-set-key [C-tab] 'hippie-expand)
 
+;; aspell conf
+(setq-default ispell-program-name "aspell")
+(setq-default ispell-extra-args '("--reverse"))
+
 ;; use zenburn theme
 (setq load-path (cons "~/.emacs.d/elpa/zenburn-theme-20150214.131" load-path))
 (require 'zenburn-theme)
