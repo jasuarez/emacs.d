@@ -68,5 +68,8 @@
     (setq load-path (cons "~/.emacs.d/gnome-emacs-utils" load-path))
     (require 'gnome-emacs-utils)
     (local-set-key [S-f1] 'devhelp-word-at-point)
+
+    ;; code indexer
+    (require 'xcscope)
   )
 ))
