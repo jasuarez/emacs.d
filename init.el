@@ -39,6 +39,7 @@
 ;; shortcuts
 (global-set-key [f1] 'goto-line)
 (global-set-key [C-tab] 'hippie-expand)
+(global-set-key "" (quote comment-region))
 
 ;; aspell conf
 (setq-default ispell-program-name "aspell")
