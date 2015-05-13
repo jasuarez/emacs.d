@@ -60,27 +60,22 @@
 (highlight-current-line-set-bg-color "gray30")
 (highlight-current-line-whole-line-on t)
 
-;; C Mode
-(add-hook 'c-mode-common-hook (lambda () (interactive)
-  (when (fboundp 'c-mode)
-    ;; load GNOME utils
-    (setq load-path (cons "~/.emacs.d/gnome-emacs-utils" load-path))
-    (require 'gnome-emacs-utils)
-    (local-set-key [S-f1] 'devhelp-word-at-point)
+;; C/C++ Mode
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            ;; load GNOME utils
+            (setq load-path (cons "~/.emacs.d/gnome-emacs-utils" load-path))
+            (require 'gnome-emacs-utils)
+            (local-set-key [S-f1] 'devhelp-word-at-point)
 
-    ;; code indexer
-    (require 'xcscope)
+            ;; code indexer
+            (require 'xcscope)
+            (cscope-minor-mode)
 
-    ;; show trailing whitespaces
-    (setq show-trailing-whitespace t)
+            ;; show trailing whitespaces
+            (setq show-trailing-whitespace t)
 
-    ;; active 'Which Function' mode
-    (which-function-mode t)
-  )
-))
-
-(add-hook 'c++-mode-hook (lambda () (interactive)
-  (when (fboundp 'c++-mode)
-    (c-set-style "stroustrup")
-  )
-))
+            ;; active 'Which Function' mode
+            (which-function-mode t)
+            )
+          )
