@@ -60,6 +60,9 @@
 (highlight-current-line-set-bg-color "gray30")
 (highlight-current-line-whole-line-on t)
 
+;; active 'Which Function' mode
+(which-function-mode t)
+
 ;; C/C++ Mode
 (add-hook 'c-mode-common-hook
           (lambda ()
@@ -74,8 +77,5 @@
 
             ;; show trailing whitespaces
             (setq show-trailing-whitespace t)
-
-            ;; active 'Which Function' mode
-            (which-function-mode t)
             )
           )
