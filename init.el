@@ -67,6 +67,9 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
+;; active iedit mode
+(require 'iedit)
+
 ;; C/C++ Mode
 (add-hook 'c-mode-common-hook
           (lambda ()
