@@ -63,6 +63,10 @@
 ;; active 'Which Function' mode
 (which-function-mode t)
 
+;; active yasnippet mode
+(require 'yasnippet)
+(yas-global-mode 1)
+
 ;; C/C++ Mode
 (add-hook 'c-mode-common-hook
           (lambda ()
