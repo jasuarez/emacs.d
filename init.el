@@ -73,6 +73,11 @@
 ;; active company mode
 (require 'company)
 (global-company-mode 1)
+(custom-theme-set-faces
+	'zenburn
+		'(company-tooltip ((t :background "cornsilk" :foreground "black")))
+		'(company-tooltip-selection ((t :background "light blue" :foreground "black")))
+	)
 
 ;; C/C++ Mode
 (add-hook 'c-mode-common-hook
