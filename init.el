@@ -70,6 +70,10 @@
 ;; active iedit mode
 (require 'iedit)
 
+;; active company mode
+(require 'company)
+(global-company-mode 1)
+
 ;; C/C++ Mode
 (add-hook 'c-mode-common-hook
           (lambda ()
