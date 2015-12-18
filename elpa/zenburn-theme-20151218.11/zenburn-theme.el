@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: http://github.com/bbatsov/zenburn-emacs
-;; Package-Version: 20151101.1158
+;; Package-Version: 20151218.11
 ;; Version: 2.3-cvs
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -624,9 +624,13 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(jabber-roster-user-away ((t (:foreground ,zenburn-green+2))))
    `(jabber-roster-user-online ((t (:foreground ,zenburn-blue-1))))
    `(jabber-roster-user-dnd ((t (:foreground ,zenburn-red+1))))
+   `(jabber-roster-user-xa ((t (:foreground ,zenburn-magenta))))
+   `(jabber-roster-user-chatty ((t (:foreground ,zenburn-orange))))
+   `(jabber-roster-user-error ((t (:foreground ,zenburn-red+1))))
    `(jabber-rare-time-face ((t (:foreground ,zenburn-green+1))))
    `(jabber-chat-prompt-local ((t (:foreground ,zenburn-blue-1))))
    `(jabber-chat-prompt-foreign ((t (:foreground ,zenburn-red+1))))
+   `(jabber-chat-prompt-system ((t (:foreground ,zenburn-green+3))))
    `(jabber-activity-face((t (:foreground ,zenburn-red+1))))
    `(jabber-activity-personal-face ((t (:foreground ,zenburn-blue+1))))
    `(jabber-title-small ((t (:height 1.1 :weight bold))))
