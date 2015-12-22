@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: http://github.com/bbatsov/zenburn-emacs
-;; Package-Version: 20151218.11
+;; Package-Version: 20151218.1241
 ;; Version: 2.3-cvs
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -503,6 +503,11 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(gnus-header-name ((t (:inherit message-header-name))))
    `(gnus-header-newsgroups ((t (:inherit message-header-other))))
    `(gnus-header-subject ((t (:inherit message-header-subject))))
+   `(gnus-server-opened ((t (:foreground ,zenburn-green+2 :weight bold))))
+   `(gnus-server-denied ((t (:foreground ,zenburn-red+1 :weight bold))))
+   `(gnus-server-closed ((t (:foreground ,zenburn-blue :slant italic))))
+   `(gnus-server-offline ((t (:foreground ,zenburn-yellow :weight bold))))
+   `(gnus-server-agent ((t (:foreground ,zenburn-blue :weight bold))))
    `(gnus-summary-cancelled ((t (:foreground ,zenburn-orange))))
    `(gnus-summary-high-ancient ((t (:foreground ,zenburn-blue))))
    `(gnus-summary-high-read ((t (:foreground ,zenburn-green :weight bold))))
