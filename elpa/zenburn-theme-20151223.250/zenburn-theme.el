@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: http://github.com/bbatsov/zenburn-emacs
-;; Package-Version: 20151218.1241
+;; Package-Version: 20151223.250
 ;; Version: 2.3-cvs
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -885,6 +885,14 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(org-mode-line-clock-overrun ((t (:foreground ,zenburn-bg :background ,zenburn-red-1))))
    `(org-ellipsis ((t (:foreground ,zenburn-yellow-1 :underline t))))
    `(org-footnote ((t (:foreground ,zenburn-cyan :underline t))))
+   `(org-habit-ready-face ((t :background ,zenburn-green)))
+   `(org-habit-alert-face ((t :background ,zenburn-yellow-1 :foreground ,zenburn-bg)))
+   `(org-habit-clear-face ((t :background ,zenburn-blue-3)))
+   `(org-habit-overdue-face ((t :background ,zenburn-red-3)))
+   `(org-habit-clear-future-face ((t :background ,zenburn-blue-4)))
+   `(org-habit-ready-future-face ((t :background ,zenburn-green-1)))
+   `(org-habit-alert-future-face ((t :background ,zenburn-yellow-2 :foreground ,zenburn-bg)))
+   `(org-habit-overdue-future-face ((t :background ,zenburn-red-4)))
 ;;;;; outline
    `(outline-1 ((t (:foreground ,zenburn-orange))))
    `(outline-2 ((t (:foreground ,zenburn-green+4))))
