@@ -79,6 +79,11 @@
 		'(company-tooltip-selection ((t :background "light blue" :foreground "black")))
 	)
 
+;; Twiki mode
+(setq load-path (cons "~/.emacs.d/emacs-twiki-mode" load-path))
+(require 'twiki)
+(add-to-list 'auto-mode-alist' ("\\.twiki$" . twiki-mode))
+
 ;; C/C++ Mode
 (add-hook 'c-mode-common-hook
           (lambda ()

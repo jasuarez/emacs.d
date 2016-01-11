@@ -1,3 +1,6 @@
 [submodule "gnome-emacs-utils"]
 	path = gnome-emacs-utils
 	url = https://github.com/federicomenaquintero/gnome-emacs-utils.git
+[submodule "emacs-twiki-mode"]
+	path = emacs-twiki-mode
+	url = https://github.com/christopherjwhite/emacs-twiki-mode.git
