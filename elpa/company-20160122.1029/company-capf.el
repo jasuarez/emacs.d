@@ -72,9 +72,12 @@
     (`prefix
      (let ((res (company--capf-data)))
        (when res
-         (if (> (nth 2 res) (point))
-             'stop
-           (buffer-substring-no-properties (nth 1 res) (point))))))
+         (let ((length (plist-get (nthcdr 4 res) :company-prefix-length))
+               (prefix (buffer-substring-no-properties (nth 1 res) (point))))
+           (cond
+            ((> (nth 2 res) (point)) 'stop)
+            (length (cons prefix length))
+            (t prefix))))))
     (`candidates
      (let ((res (company--capf-data)))
        (when res
