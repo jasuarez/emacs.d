@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "glsl-mode" "glsl-mode.el" (22015 47684 190892
-;;;;;;  399000))
+;;;### (autoloads nil "glsl-mode" "glsl-mode.el" (22215 14700 347731
+;;;;;;  631000))
 ;;; Generated autoloads from glsl-mode.el
 
 (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))

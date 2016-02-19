@@ -6,7 +6,7 @@
 ;; Authors: Xavier.Decoret@imag.fr, 
 ;;          Jim Hourihan <jimhourihan ~at~ gmail.com> (updated for 4.5, etc)
 ;; Keywords: languages
-;; Package-Version: 20150114.833
+;; Package-Version: 20160209.833
 ;; Version: 2.0
 ;; X-URL: http://artis.inrialpes.fr/~Xavier.Decoret/resources/glsl-mode/
 ;;
@@ -78,42 +78,42 @@
 
 (defvar glsl-type-face 'glsl-type-face)
 (defface glsl-type-face
-  '((t (:inherit 'font-lock-type-face))) "glsl: type face"
+  '((t (:inherit font-lock-type-face))) "glsl: type face"
   :group 'glsl)
 
 (defvar glsl-builtin-face 'glsl-builtin-face)
 (defface glsl-builtin-face
-  '((t (:inherit 'font-lock-builtin-face))) "glsl: builtin face"
+  '((t (:inherit font-lock-builtin-face))) "glsl: builtin face"
   :group 'glsl)
 
 (defvar glsl-deprecated-builtin-face 'glsl-deprecated-builtin-face)
 (defface glsl-deprecated-builtin-face
-  '((t (:inherit 'glsl-builtin-face))) "glsl: deprecated builtin face"
+  '((t (:inherit glsl-builtin-face))) "glsl: deprecated builtin face"
   :group 'glsl)
 
 (defvar glsl-keyword-face 'glsl-keyword-face)
 (defface glsl-keyword-face
-  '((t (:inherit 'font-lock-keyword-face))) "glsl: keyword face"
+  '((t (:inherit font-lock-keyword-face))) "glsl: keyword face"
   :group 'glsl)
 
 (defvar glsl-deprecated-keyword-face 'glsl-deprecated-keyword-face)
 (defface glsl-deprecated-keyword-face
-  '((t (:inherit 'glsl-keyword-face))) "glsl: deprecated keyword face"
+  '((t (:inherit glsl-keyword-face))) "glsl: deprecated keyword face"
   :group 'glsl)
 
 (defvar glsl-variable-name-face 'glsl-variable-name-face)
 (defface glsl-variable-name-face
-  '((t (:inherit 'font-lock-variable-name-face))) "glsl: variable face"
+  '((t (:inherit font-lock-variable-name-face))) "glsl: variable face"
   :group 'glsl)
 
 (defvar glsl-deprecated-variable-name-face 'glsl-deprecated-variable-name-face)
 (defface glsl-deprecated-variable-name-face
-  '((t (:inherit 'glsl-variable-name-face))) "glsl: deprecated variable face"
+  '((t (:inherit glsl-variable-name-face))) "glsl: deprecated variable face"
   :group 'glsl)
 
 (defvar glsl-preprocessor-face 'glsl-preprocessor-face)
 (defface glsl-preprocessor-face
-  '((t (:inherit 'font-lock-preprocessor-face))) "glsl: preprocessor face"
+  '((t (:inherit font-lock-preprocessor-face))) "glsl: preprocessor face"
   :group 'glsl)
 
 (defvar glsl-mode-hook nil)
