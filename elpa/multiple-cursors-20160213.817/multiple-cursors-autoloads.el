@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "mc-edit-lines" "mc-edit-lines.el" (22132 36612
-;;;;;;  612769 664000))
+;;;### (autoloads nil "mc-edit-lines" "mc-edit-lines.el" (22215 14699
+;;;;;;  296726 963000))
 ;;; Generated autoloads from mc-edit-lines.el
 
 (autoload 'mc/edit-lines "mc-edit-lines" "\
@@ -34,7 +34,7 @@ Add one cursor to the beginning of each line in the active region.
 ;;;***
 
 ;;;### (autoloads nil "mc-hide-unmatched-lines-mode" "mc-hide-unmatched-lines-mode.el"
-;;;;;;  (22132 36612 641769 649000))
+;;;;;;  (22215 14699 325727 92000))
 ;;; Generated autoloads from mc-hide-unmatched-lines-mode.el
 
 (autoload 'mc-hide-unmatched-lines-mode "mc-hide-unmatched-lines-mode" "\
@@ -48,8 +48,8 @@ mode. To leave this mode press <return> or \"C-g\"
 
 ;;;***
 
-;;;### (autoloads nil "mc-mark-more" "mc-mark-more.el" (22132 36612
-;;;;;;  657769 640000))
+;;;### (autoloads nil "mc-mark-more" "mc-mark-more.el" (22215 14699
+;;;;;;  360727 247000))
 ;;; Generated autoloads from mc-mark-more.el
 
 (autoload 'mc/mark-next-like-this "mc-mark-more" "\
@@ -218,8 +218,8 @@ Mark the tag we're in and its pair for renaming.
 
 ;;;***
 
-;;;### (autoloads nil "mc-mark-pop" "mc-mark-pop.el" (22132 36612
-;;;;;;  636769 651000))
+;;;### (autoloads nil "mc-mark-pop" "mc-mark-pop.el" (22215 14699
+;;;;;;  314727 43000))
 ;;; Generated autoloads from mc-mark-pop.el
 
 (autoload 'mc/mark-pop "mc-mark-pop" "\
@@ -231,7 +231,7 @@ to the popped mark.
 ;;;***
 
 ;;;### (autoloads nil "mc-separate-operations" "mc-separate-operations.el"
-;;;;;;  (22132 36612 647769 645000))
+;;;;;;  (22215 14699 343727 172000))
 ;;; Generated autoloads from mc-separate-operations.el
 
 (autoload 'mc/insert-numbers "mc-separate-operations" "\
@@ -270,7 +270,7 @@ Aligns all cursors with whitespace like `mc/vertical-align' does
 ;;;***
 
 ;;;### (autoloads nil "multiple-cursors-core" "multiple-cursors-core.el"
-;;;;;;  (22132 36612 599769 670000))
+;;;;;;  (22215 14699 289726 932000))
 ;;; Generated autoloads from multiple-cursors-core.el
 
 (autoload 'multiple-cursors-mode "multiple-cursors-core" "\
@@ -281,7 +281,7 @@ Mode while multiple cursors are active.
 ;;;***
 
 ;;;### (autoloads nil "rectangular-region-mode" "rectangular-region-mode.el"
-;;;;;;  (22132 36612 624769 658000))
+;;;;;;  (22215 14699 309727 21000))
 ;;; Generated autoloads from rectangular-region-mode.el
 
 (autoload 'set-rectangular-region-anchor "rectangular-region-mode" "\
@@ -300,7 +300,7 @@ A mode for creating a rectangular region to edit
 ;;;***
 
 ;;;### (autoloads nil nil ("mc-cycle-cursors.el" "multiple-cursors-pkg.el"
-;;;;;;  "multiple-cursors.el") (22132 36612 673864 964000))
+;;;;;;  "multiple-cursors.el") (22215 14699 376660 814000))
 
 ;;;***
 
