@@ -833,7 +833,8 @@ means that `company-mode' is always turned on except in `message-mode' buffers."
 If EXPRESSION is non-nil, return the match string for the respective
 parenthesized expression in REGEXP.
 Matching is limited to the current line."
-  (company-grab regexp expression (point-at-bol)))
+  (let ((inhibit-field-text-motion t))
+    (company-grab regexp expression (point-at-bol))))
 
 (defun company-grab-symbol ()
   "If point is at the end of a symbol, return it.
@@ -855,7 +856,7 @@ Otherwise, if point is not inside a symbol, return an empty string."
 
 (defun company-grab-symbol-cons (idle-begin-after-re &optional max-len)
   "Return a string SYMBOL or a cons (SYMBOL . t).
-SYMBOL is as returned by `company-grab-symbol'.  If the text before poit
+SYMBOL is as returned by `company-grab-symbol'.  If the text before point
 matches IDLE-BEGIN-AFTER-RE, return it wrapped in a cons."
   (let ((symbol (company-grab-symbol)))
     (when symbol
