@@ -4,8 +4,8 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: http://github.com/bbatsov/zenburn-emacs
-;; Package-Version: 20160327.520
-;; Version: 2.3-cvs
+;; Package-Version: 20160501.749
+;; Version: 2.4
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -206,6 +206,10 @@ Also bind `class' to ((class color) (min-colors 89))."
      ((t (:foreground ,zenburn-fg-1 :background ,zenburn-bg :inverse-video nil))))
    `(ace-jump-face-foreground
      ((t (:foreground ,zenburn-green+2 :background ,zenburn-bg :inverse-video nil))))
+;;;;; ace-window
+   `(aw-background-face
+     ((t (:foreground ,zenburn-fg-1 :background ,zenburn-bg :inverse-video nil))))
+   `(aw-leading-char-face ((t (:inherit aw-mode-line-face))))
 ;;;;; android mode
    `(android-mode-debug-face ((t (:foreground ,zenburn-green+1))))
    `(android-mode-error-face ((t (:foreground ,zenburn-orange :weight bold))))
@@ -214,6 +218,10 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(android-mode-warning-face ((t (:foreground ,zenburn-yellow))))
 ;;;;; anzu
    `(anzu-mode-line ((t (:foreground ,zenburn-cyan :weight bold))))
+   `(anzu-match-1 ((t (:foreground ,zenburn-bg :background ,zenburn-green))))
+   `(anzu-match-2 ((t (:foreground ,zenburn-bg :background ,zenburn-orange))))
+   `(anzu-match-3 ((t (:foreground ,zenburn-bg :background ,zenburn-blue))))
+   `(anzu-replace-to ((t (:inherit anzu-replace-highlight :foreground ,zenburn-yellow))))
 ;;;;; auctex
    `(font-latex-bold-face ((t (:inherit bold))))
    `(font-latex-warning-face ((t (:foreground nil :inherit font-lock-warning-face))))
@@ -275,6 +283,14 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(bm-persistent-face ((t (:background ,zenburn-green-1 :foreground ,zenburn-bg))))
 ;;;;; cider
    `(cider-result-overlay-face ((t (:foreground ,zenburn-fg-1 :background unspecified))))
+   `(cider-enlightened-face ((t (:box (:color ,zenburn-orange :line-width -1)))))
+   `(cider-enlightened-local-face ((t (:weight bold :foreground ,zenburn-green+1))))
+   `(cider-deprecated-face ((t (:background ,zenburn-yellow-2))))
+   `(cider-instrumented-face ((t (:box (:color ,zenburn-red :line-width -1)))))
+   `(cider-traced-face ((t (:box (:color ,zenburn-cyan :line-width -1)))))
+   `(cider-test-failure-face ((t (:background ,zenburn-red-4))))
+   `(cider-test-error-face ((t (:background ,zenburn-magenta))))
+   `(cider-test-success-face ((t (:background ,zenburn-green-1))))
 ;;;;; circe
    `(circe-highlight-nick-face ((t (:foreground ,zenburn-cyan))))
    `(circe-my-message-face ((t (:foreground ,zenburn-fg))))
@@ -344,6 +360,10 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(diredp-read-priv ((t (:foreground ,zenburn-green-1))))
    `(diredp-symlink ((t (:foreground ,zenburn-yellow))))
    `(diredp-write-priv ((t (:foreground ,zenburn-magenta))))
+;;;;; dired-async
+   `(dired-async-failures ((t (:foreground ,zenburn-red :weight bold))))
+   `(dired-async-message ((t (:foreground ,zenburn-yellow :weight bold))))
+   `(dired-async-mode-message ((t (:foreground ,zenburn-yellow))))
 ;;;;; ediff
    `(ediff-current-diff-A ((t (:foreground ,zenburn-fg :background ,zenburn-red-4))))
    `(ediff-current-diff-Ancestor ((t (:foreground ,zenburn-fg :background ,zenburn-red-4))))
@@ -374,6 +394,9 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(egg-section-title ((t (:foreground ,zenburn-yellow))))
    `(egg-stash-mono ((t (:foreground ,zenburn-green+4))))
 ;;;;; elfeed
+   `(elfeed-log-error-level-face ((t (:foreground ,zenburn-red))))
+   `(elfeed-log-info-level-face ((t (:foreground ,zenburn-blue))))
+   `(elfeed-log-warn-level-face ((t (:foreground ,zenburn-yellow))))
    `(elfeed-search-date-face ((t (:foreground ,zenburn-yellow-1 :underline t
                                               :weight bold))))
    `(elfeed-search-tag-face ((t (:foreground ,zenburn-green))))
@@ -693,6 +716,10 @@ Also bind `class' to ((class color) (min-colors 89))."
    `(ledger-font-report-clickable-face ((t (:foreground ,zenburn-orange :weight normal))))
 ;;;;; linum-mode
    `(linum ((t (:foreground ,zenburn-green+2 :background ,zenburn-bg))))
+;;;;; lispy
+   `(lispy-command-name-face ((t (:background ,zenburn-bg-05 :inherit font-lock-function-name-face))))
+   `(lispy-cursor-face ((t (:foreground ,zenburn-bg :background ,zenburn-fg))))
+   `(lispy-face-hint ((t (:inherit highlight :foreground ,zenburn-yellow))))
 ;;;;; ruler-mode
    `(ruler-mode-column-number ((t (:inherit 'ruler-mode-default :foreground ,zenburn-fg))))
    `(ruler-mode-fill-column ((t (:inherit 'ruler-mode-default :foreground ,zenburn-yellow))))
