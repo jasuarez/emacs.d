@@ -10,7 +10,7 @@
 ;; Maintainer: Dima Kogan <dima@secretsauce.net>
 ;; Keywords: languages c
 ;; Homepage: https://github.com/dkogan/xcscope.el
-;; Package-Version: 20160201.1926
+;; Package-Version: 20160513.1206
 ;; Package-X-Original-Version: 1.0
 
 ;; This file is not part of GNU Emacs.
@@ -859,7 +859,7 @@ be removed by quitting the cscope buffer."
 (defvar cscope-display-buffer-args
   (and (not cscope-running-in-xemacs)
        (>= emacs-major-version 24)
-       '(display-buffer-use-some-window (inhibit-same-window . t)))
+       '((display-buffer-use-some-window (inhibit-same-window . t))))
   "Default arguments to `display-buffer'. This applies to ACTION
 and FRAME arguments of the newer `display-buffer' in >= GNU Emacs
 24. This controls how and where the *cscope* buffer is popped up.
