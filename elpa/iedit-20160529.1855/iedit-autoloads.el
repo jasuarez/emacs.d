@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "iedit" "iedit.el" (22336 38874 674430 617000))
+;;;### (autoloads nil "iedit" "iedit.el" (22357 10330 64712 905000))
 ;;; Generated autoloads from iedit.el
 
 (autoload 'iedit-mode "iedit" "\
@@ -68,8 +68,8 @@ Toggle Iedit mode on current function.
 
 ;;;***
 
-;;;### (autoloads nil "iedit-rect" "iedit-rect.el" (22336 38874 688430
-;;;;;;  675000))
+;;;### (autoloads nil "iedit-rect" "iedit-rect.el" (22357 10330 70712
+;;;;;;  937000))
 ;;; Generated autoloads from iedit-rect.el
 
 (autoload 'iedit-rectangle-mode "iedit-rect" "\
@@ -86,8 +86,8 @@ Commands:
 
 ;;;***
 
-;;;### (autoloads nil nil ("iedit-lib.el" "iedit-pkg.el") (22336
-;;;;;;  38874 730597 206000))
+;;;### (autoloads nil nil ("iedit-lib.el" "iedit-pkg.el") (22357
+;;;;;;  10330 103453 944000))
 
 ;;;***
 
