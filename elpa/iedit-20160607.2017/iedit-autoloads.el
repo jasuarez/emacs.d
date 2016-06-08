@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "iedit" "iedit.el" (22357 10330 64712 905000))
+;;;### (autoloads nil "iedit" "iedit.el" (22359 53036 696674 473000))
 ;;; Generated autoloads from iedit.el
 
 (autoload 'iedit-mode "iedit" "\
@@ -44,6 +44,11 @@ Iedit mode is turned off last time (might be in other buffer) is
 used as occurrence.  If region active, Iedit mode is limited
 within the current region.
 
+With digital prefix argument 1, Iedit mode is limited on the
+current symbol or the active region, which means just one
+instance is highlighted.  This behavior serves as a start point
+of incremental selection work flow.
+
 If Iedit mode is on and region is active, Iedit mode is
 restricted in the region, e.g. the occurrences outside of the
 region is excluded.
@@ -68,8 +73,8 @@ Toggle Iedit mode on current function.
 
 ;;;***
 
-;;;### (autoloads nil "iedit-rect" "iedit-rect.el" (22357 10330 70712
-;;;;;;  937000))
+;;;### (autoloads nil "iedit-rect" "iedit-rect.el" (22359 53036 704674
+;;;;;;  519000))
 ;;; Generated autoloads from iedit-rect.el
 
 (autoload 'iedit-rectangle-mode "iedit-rect" "\
@@ -86,8 +91,8 @@ Commands:
 
 ;;;***
 
-;;;### (autoloads nil nil ("iedit-lib.el" "iedit-pkg.el") (22357
-;;;;;;  10330 103453 944000))
+;;;### (autoloads nil nil ("iedit-lib.el" "iedit-pkg.el") (22359
+;;;;;;  53036 754984 791000))
 
 ;;;***
 
