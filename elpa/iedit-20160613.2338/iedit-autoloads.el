@@ -1,9 +1,9 @@
 ;;; iedit-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "iedit" "iedit.el" (22359 53036 696674 473000))
+;;;### (autoloads nil "iedit" "iedit.el" (22371 44556 167647 619000))
 ;;; Generated autoloads from iedit.el
 
 (autoload 'iedit-mode "iedit" "\
@@ -19,7 +19,7 @@ highlighted.  If one occurrence is modified, the change are
 propagated to all other occurrences simultaneously.
 
 If region is not active, the current symbol (returns from
-`iedit-current-symbol') is used as the occurrence by default.
+`iedit-default-occurrence') is used as the occurrence by default.
 The occurrences of the current symbol, but not include
 occurrences that are part of other symbols, are highlighted.  If
 you still want to match all the occurrences, even though they are
@@ -73,8 +73,8 @@ Toggle Iedit mode on current function.
 
 ;;;***
 
-;;;### (autoloads nil "iedit-rect" "iedit-rect.el" (22359 53036 704674
-;;;;;;  519000))
+;;;### (autoloads nil "iedit-rect" "iedit-rect.el" (22371 44556 175647
+;;;;;;  475000))
 ;;; Generated autoloads from iedit-rect.el
 
 (autoload 'iedit-rectangle-mode "iedit-rect" "\
@@ -91,8 +91,8 @@ Commands:
 
 ;;;***
 
-;;;### (autoloads nil nil ("iedit-lib.el" "iedit-pkg.el") (22359
-;;;;;;  53036 754984 791000))
+;;;### (autoloads nil nil ("iedit-lib.el" "iedit-pkg.el") (22371
+;;;;;;  44556 188647 240000))
 
 ;;;***
 
