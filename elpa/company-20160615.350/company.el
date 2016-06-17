@@ -186,9 +186,13 @@ buffer-local wherever it is set."
 (defun company-frontends-set (variable value)
   ;; Uniquify.
   (let ((value (delete-dups (copy-sequence value))))
-    (and (memq 'company-pseudo-tooltip-unless-just-one-frontend value)
-         (memq 'company-pseudo-tooltip-frontend value)
-         (error "Pseudo tooltip frontend cannot be used twice"))
+    (and (or (and (memq 'company-pseudo-tooltip-unless-just-one-frontend value)
+                  (memq 'company-pseudo-tooltip-frontend value))
+             (and (memq 'company-pseudo-tooltip-unless-just-one-frontend-with-delay value)
+                  (memq 'company-pseudo-tooltip-frontend value))
+             (and (memq 'company-pseudo-tooltip-unless-just-one-frontend-with-delay value)
+                  (memq 'company-pseudo-tooltip-unless-just-one-frontend value)))
+         (error "Pseudo tooltip frontend cannot be used more than once"))
     (and (memq 'company-preview-if-just-one-frontend value)
          (memq 'company-preview-frontend value)
          (error "Preview frontend cannot be used twice"))
@@ -233,6 +237,8 @@ The visualized data is stored in `company-prefix', `company-candidates',
                                 company-pseudo-tooltip-frontend)
                          (const :tag "pseudo tooltip, multiple only"
                                 company-pseudo-tooltip-unless-just-one-frontend)
+                         (const :tag "pseudo tooltip, multiple only, delayed"
+                                company-pseudo-tooltip-unless-just-one-frontend-with-delay)
                          (const :tag "preview" company-preview-frontend)
                          (const :tag "preview, unique only"
                                 company-preview-if-just-one-frontend)
@@ -465,6 +471,8 @@ without duplicates."
           (const :tag "Sort by occurrence" (company-sort-by-occurrence))
           (const :tag "Sort by backend importance"
                  (company-sort-by-backend-importance))
+          (const :tag "Prefer case sensitive prefix"
+                 (company-sort-prefer-same-case-prefix))
           (repeat :tag "User defined" (function))))
 
 (defcustom company-completion-started-hook nil
@@ -553,6 +561,13 @@ A character that is part of a valid candidate never triggers auto-completion."
   "The idle delay in seconds until completion starts automatically.
 The prefix still has to satisfy `company-minimum-prefix-length' before that
 happens.  The value of nil means no idle completion."
+  :type '(choice (const :tag "never (nil)" nil)
+                 (const :tag "immediate (0)" 0)
+                 (number :tag "seconds")))
+
+(defcustom company-tooltip-idle-delay .5
+  "The idle delay in seconds until tooltip is shown when using
+`company-pseudo-tooltip-unless-just-one-frontend-with-delay'."
   :type '(choice (const :tag "never (nil)" nil)
                  (const :tag "immediate (0)" 0)
                  (number :tag "seconds")))
@@ -1017,6 +1032,7 @@ Controlled by `company-auto-complete'.")
 (defvar-local company-point nil)
 
 (defvar company-timer nil)
+(defvar company-tooltip-timer nil)
 
 (defsubst company-strip-prefix (str)
   (substring str (length company-prefix)))
@@ -1330,6 +1346,16 @@ from the rest of the backends in the group, if any, will be left at the end."
                    (and b2 (memq b2 low-priority)))
                  (let ((b1 (get-text-property 0 'company-backend c1)))
                    (or (not b1) (not (memq b1 low-priority)))))))))))
+
+(defun company-sort-prefer-same-case-prefix (candidates)
+  "Prefer CANDIDATES with the same case sensitive prefix.
+If a backend returns case insensitive matches, candidates with the an exact
+prefix match will be prioritized even if this changes the lexical order."
+  (cl-loop for candidate in candidates
+           if (string-prefix-p company-prefix candidate)
+           collect candidate into same-case
+           else collect candidate into other-case
+           finally return (append same-case other-case)))
 
 (defun company-idle-begin (buf win tick pos)
   (and (eq buf (current-buffer))
@@ -2047,6 +2073,15 @@ With ARG, move by that many elements."
       (when (and (eq old-point (point))
                  (eq old-tick (buffer-chars-modified-tick)))
         (company-complete-common))))))
+
+(defun company-select-next-if-tooltip-visible-or-complete-selection ()
+  "Insert selection if appropriate, or select the next candidate.
+Insert selection if only preview is showing or only one candidate,
+otherwise select the next candidate."
+  (interactive)
+  (if (and (company-tooltip-visible-p) (> company-candidates-length 1))
+      (call-interactively 'company-select-next)
+    (call-interactively 'company-complete-selection)))
 
 ;;;###autoload
 (defun company-complete ()
@@ -2818,6 +2853,30 @@ Returns a negative number if the tooltip should be displayed above point."
                (company--show-inline-p))
     (company-pseudo-tooltip-frontend command)))
 
+(defun company-pseudo-tooltip-unless-just-one-frontend-with-delay (command)
+  "`compandy-pseudo-tooltip-frontend', but shown after a delay.
+Delay is determined by `company-tooltip-idle-delay'."
+  (cl-case command
+    (pre-command
+     (company-pseudo-tooltip-unless-just-one-frontend command)
+     (when company-tooltip-timer
+       (cancel-timer company-tooltip-timer)
+       (setq company-tooltip-timer nil)))
+    (post-command
+     (if (or company-tooltip-timer
+             (overlayp company-pseudo-tooltip-overlay))
+         (if (not (memq 'company-preview-frontend company-frontends))
+             (company-pseudo-tooltip-unless-just-one-frontend command)
+           (company-preview-frontend 'pre-command)
+           (company-pseudo-tooltip-unless-just-one-frontend command)
+           (company-preview-frontend 'post-command))
+       (setq company-tooltip-timer
+             (run-with-timer company-tooltip-idle-delay nil
+                             'company-pseudo-tooltip-unless-just-one-frontend-with-delay
+                             'post-command))))
+    (t
+     (company-pseudo-tooltip-unless-just-one-frontend command))))
+
 ;;; overlay ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar-local company-preview-overlay nil)
@@ -2891,6 +2950,11 @@ Returns a negative number if the tooltip should be displayed above point."
        company-common
        (or (eq (company-call-backend 'ignore-case) 'keep-prefix)
            (string-prefix-p company-prefix company-common))))
+
+(defun company-tooltip-visible-p ()
+  "Returns whether the tooltip is visible."
+  (when (overlayp company-pseudo-tooltip-overlay)
+    (not (overlay-get company-pseudo-tooltip-overlay 'invisible))))
 
 ;;; echo ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
