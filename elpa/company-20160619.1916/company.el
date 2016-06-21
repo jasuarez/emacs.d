@@ -426,11 +426,11 @@ call is dispatched to the backend the candidate came from.  In other
 cases (except for `duplicates' and `sorted'), the first non-nil value among
 all the backends is returned.
 
-The group can also contain keywords.  Currently, `:with' and `:sorted'
+The group can also contain keywords.  Currently, `:with' and `:separate'
 keywords are defined.  If the group contains keyword `:with', the backends
 listed after this keyword are ignored for the purpose of the `prefix'
-command.  If the group contains keyword `:sorted', the final list of
-candidates is not sorted after concatenation.
+command.  If the group contains keyword `:separate', the candidates that
+come from different backends are sorted separately in the combined list.
 
 Asynchronous backends
 =====================
@@ -643,7 +643,6 @@ asynchronous call into synchronous.")
     (define-key keymap [mouse-3] 'company-select-mouse)
     (define-key keymap [up-mouse-1] 'ignore)
     (define-key keymap [up-mouse-3] 'ignore)
-    (define-key keymap [return] 'company-complete-selection)
     (define-key keymap (kbd "RET") 'company-complete-selection)
     (define-key keymap [tab] 'company-complete-common)
     (define-key keymap (kbd "TAB") 'company-complete-common)
@@ -920,19 +919,19 @@ matches IDLE-BEGIN-AFTER-RE, return it wrapped in a cons."
   (let ((backends (cl-loop for b in backends
                            when (not (and (symbolp b)
                                           (eq 'failed (get b 'company-init))))
-                           collect b)))
+                           collect b))
+        (separate (memq :separate backends)))
 
     (when (eq command 'prefix)
       (setq backends (butlast backends (length (member :with backends)))))
 
-    (unless (memq command '(sorted))
-      (setq backends (cl-delete-if #'keywordp backends)))
+    (setq backends (cl-delete-if #'keywordp backends))
 
     (pcase command
       (`candidates
-       (company--multi-backend-adapter-candidates backends (car args)))
-      (`sorted (memq :sorted backends))
-      (`duplicates t)
+       (company--multi-backend-adapter-candidates backends (car args) separate))
+      (`sorted separate)
+      (`duplicates (not separate))
       ((or `prefix `ignore-case `no-cache `require-match)
        (let (value)
          (cl-dolist (backend backends)
@@ -946,25 +945,34 @@ matches IDLE-BEGIN-AFTER-RE, return it wrapped in a cons."
                               (car backends))))
              (apply backend command args))))))))
 
-(defun company--multi-backend-adapter-candidates (backends prefix)
-  (let ((pairs (cl-loop for backend in (cdr backends)
+(defun company--multi-backend-adapter-candidates (backends prefix separate)
+  (let ((pairs (cl-loop for backend in backends
                         when (equal (company--prefix-str
                                      (funcall backend 'prefix))
                                     prefix)
                         collect (cons (funcall backend 'candidates prefix)
-                                      (let ((b backend))
-                                        (lambda (candidates)
-                                          (mapcar
-                                           (lambda (str)
-                                             (propertize str 'company-backend b))
-                                           candidates)))))))
-    (when (equal (company--prefix-str (funcall (car backends) 'prefix)) prefix)
-      ;; Small perf optimization: don't tag the candidates received
-      ;; from the first backend in the group.
-      (push (cons (funcall (car backends) 'candidates prefix)
-                  'identity)
-            pairs))
+                                      (company--multi-candidates-mapper
+                                       backend
+                                       separate
+                                       ;; Small perf optimization: don't tag the
+                                       ;; candidates received from the first
+                                       ;; backend in the group.
+                                       (not (eq backend (car backends))))))))
     (company--merge-async pairs (lambda (values) (apply #'append values)))))
+
+(defun company--multi-candidates-mapper (backend separate tag)
+  (lambda (candidates)
+    (when separate
+      (let ((company-backend backend))
+        (setq candidates
+              (company--preprocess-candidates candidates))))
+    (when tag
+      (setq candidates
+            (mapcar
+             (lambda (str)
+               (propertize str 'company-backend backend))
+             candidates)))
+    candidates))
 
 (defun company--merge-async (pairs merger)
   (let ((async (cl-loop for pair in pairs
@@ -1348,9 +1356,9 @@ from the rest of the backends in the group, if any, will be left at the end."
                    (or (not b1) (not (memq b1 low-priority)))))))))))
 
 (defun company-sort-prefer-same-case-prefix (candidates)
-  "Prefer CANDIDATES with the same case sensitive prefix.
+  "Prefer CANDIDATES with the exact same prefix.
 If a backend returns case insensitive matches, candidates with the an exact
-prefix match will be prioritized even if this changes the lexical order."
+prefix match (same case) will be prioritized."
   (cl-loop for candidate in candidates
            if (string-prefix-p company-prefix candidate)
            collect candidate into same-case
