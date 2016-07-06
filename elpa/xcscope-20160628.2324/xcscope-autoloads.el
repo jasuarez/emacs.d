@@ -1,10 +1,10 @@
 ;;; xcscope-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "xcscope" "xcscope.el" (22336 38871 279416
-;;;;;;  404000))
+;;;### (autoloads nil "xcscope" "xcscope.el" (22396 55374 753327
+;;;;;;  330000))
 ;;; Generated autoloads from xcscope.el
 
 (autoload 'cscope-minor-mode "xcscope" "\
