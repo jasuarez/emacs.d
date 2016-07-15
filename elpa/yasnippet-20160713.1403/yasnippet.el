@@ -3079,8 +3079,7 @@ Otherwise delegate to `yas-next-field'."
                         (and (not (eq field active))
                              (yas--field-probably-deleted-p snippet field)))
                       (yas--snippet-fields snippet))))
-    (if (>= n 0) (nth n (memq active live-fields))
-      (car (last (memq active (reverse live-fields)) (- n))))))
+    (nth (abs n) (memq active (if (>= n 0) live-fields (reverse live-fields))))))
 
 (defun yas-next-field (&optional arg)
   "Navigate to the ARGth next field.
@@ -3416,14 +3415,15 @@ field start.  This hook does nothing if an undo is in progress."
     (let* ((inhibit-modification-hooks t)
            (field (overlay-get overlay 'yas--field))
            (snippet (overlay-get yas--active-field-overlay 'yas--snippet)))
-      (when (yas--skip-and-clear-field-p field beg end length)
-        ;; We delete text starting from the END of insertion.
-        (yas--skip-and-clear field end))
-      (setf (yas--field-modified-p field) t)
-      (yas--advance-end-maybe field (overlay-end overlay))
-      (save-excursion
-        (yas--field-update-display field))
-      (yas--update-mirrors snippet))))
+      (save-match-data
+        (when (yas--skip-and-clear-field-p field beg end length)
+          ;; We delete text starting from the END of insertion.
+          (yas--skip-and-clear field end))
+        (setf (yas--field-modified-p field) t)
+        (yas--advance-end-maybe field (overlay-end overlay))
+        (save-excursion
+          (yas--field-update-display field))
+        (yas--update-mirrors snippet)))))
 
 ;;; Apropos protection overlays:
 ;;
