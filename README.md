@@ -4,4 +4,4 @@ To use them:
 
 ```
 git clone --recursive https://github.com/jasuarez/emacs.d ~/.emacs.d
-
+emacs -batch -u $USER -f package-utils-upgrade-all
