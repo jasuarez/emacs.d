@@ -13,7 +13,7 @@
  '(fill-column 80)
  '(package-selected-packages
    (quote
-    (zenburn-theme yasnippet yaml-mode xcscope package-utils multiple-cursors markdown-mode iedit highlight-current-line google-c-style glsl-mode gist fpaste dockerfile-mode company column-enforce-mode)))
+    (editorconfig zenburn-theme yasnippet yaml-mode xcscope package-utils multiple-cursors markdown-mode iedit highlight-current-line google-c-style glsl-mode gist fpaste dockerfile-mode company column-enforce-mode)))
  '(paren-set-mode (quote sexp))
  '(safe-local-variable-values (quote ((js-indent-level . 4))))
  '(show-paren-mode t)
