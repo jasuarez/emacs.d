@@ -3,10 +3,17 @@
 
 ;; custom variables
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(blink-matching-parent t)
  '(calendar-week-start-day 1)
  '(column-number-mode t)
  '(fill-column 80)
+ '(package-selected-packages
+   (quote
+    (zenburn-theme yasnippet yaml-mode xcscope package-utils multiple-cursors markdown-mode iedit highlight-current-line google-c-style glsl-mode gist fpaste dockerfile-mode company column-enforce-mode)))
  '(paren-set-mode (quote sexp))
  '(safe-local-variable-values (quote ((js-indent-level . 4))))
  '(show-paren-mode t)
@@ -19,7 +26,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
+ )
 
 ;; UTF-8 encoding
 (setq locale-coding-system 'utf-8)
