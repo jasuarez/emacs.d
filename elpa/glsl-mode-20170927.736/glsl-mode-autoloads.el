@@ -1,10 +1,10 @@
 ;;; glsl-mode-autoloads.el --- automatically extracted autoloads
 ;;
 ;;; Code:
-(add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
+(add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "glsl-mode" "glsl-mode.el" (22215 14700 347731
-;;;;;;  631000))
+;;;### (autoloads nil "glsl-mode" "glsl-mode.el" (23154 6484 138699
+;;;;;;  591000))
 ;;; Generated autoloads from glsl-mode.el
 
 (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
