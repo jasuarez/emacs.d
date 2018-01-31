@@ -3,7 +3,7 @@
 ;; Copyright (C) 2011-2017 EditorConfig Team
 
 ;; Author: EditorConfig Team <editorconfig@googlegroups.com>
-;; Version: 0.7.10
+;; Version: 0.7.11
 ;; URL: https://github.com/editorconfig/editorconfig-emacs#readme
 ;; Package-Requires: ((cl-lib "0.5"))
 
@@ -86,6 +86,12 @@ names as keys and strings of property values as values."
   'editorconfig-get-properties-function
   "0.5")
 
+(defcustom editorconfig-mode-lighter " EditorConfig"
+  "Lighter displayed in mode line
+when `editorconfig-mode' is enabled."
+  :type 'string
+  :group 'editorconfig)
+
 (defcustom editorconfig-custom-hooks ()
   "A list of custom hooks after loading common EditorConfig settings.
 
@@ -112,7 +118,8 @@ show line numbers on the left:
 
 (defcustom editorconfig-indentation-alist
   ;; For contributors: Sort modes in alphabetical order, please :)
-  '((awk-mode c-basic-offset)
+  '((apache-mode apache-indent-level)
+    (awk-mode c-basic-offset)
     (c++-mode c-basic-offset)
     (c-mode c-basic-offset)
     (cmake-mode cmake-tab-width)
@@ -128,7 +135,7 @@ show line numbers on the left:
     (fsharp-mode fsharp-continuation-offset
                  fsharp-indent-level
                  fsharp-indent-offset)
-    (groovy-mode c-basic-offset)
+    (groovy-mode groovy-indent-offset)
     (haskell-mode haskell-indent-spaces
                   haskell-indent-offset
                   haskell-indentation-layout-offset
@@ -165,6 +172,7 @@ show line numbers on the left:
     (php-mode c-basic-offset)
     (pike-mode c-basic-offset)
     (ps-mode ps-mode-tab)
+    (pug-mode pug-tab-width)
     (puppet-mode puppet-indent-level)
     (python-mode . editorconfig-set-indentation/python-mode)
     (ruby-mode ruby-indent-level)
@@ -184,9 +192,12 @@ show line numbers on the left:
                   verilog-cexp-indent
                   verilog-case-indent)
     (web-mode (web-mode-indent-style . (lambda (size) 2))
-              web-mode-markup-indent-offset
-              web-mode-css-indent-offset
+              web-mode-attr-indent-offset
+              web-mode-attr-value-indent-offset
               web-mode-code-indent-offset
+              web-mode-css-indent-offset
+              web-mode-markup-indent-offset
+              web-mode-sql-indent-offset
               web-mode-block-padding
               web-mode-script-padding
               web-mode-style-padding)
@@ -378,6 +389,32 @@ TRIM-TRAILING-WS."
              (> (string-to-number length) 0))
     (setq fill-column (string-to-number length))))
 
+(defun editorconfig--is-a-mode-p (current want)
+  "Return non-nil if major mode CURRENT is a major mode WANT."
+  (or (eq current
+          want)
+      (let ((parent (get current 'derived-mode-parent)))
+        (and parent
+             (editorconfig--is-a-mode-p parent want)))))
+
+(defun editorconfig-set-major-mode (filetype)
+  "Set buffer `major-mode' by FILETYPE.
+
+FILETYPE should be s string like `\"ini\"`, if not nil or empty string."
+  (let ((mode (and filetype
+                   (not (string= filetype
+                                 ""))
+                   (intern (concat filetype
+                                   "-mode")))))
+    (when (and mode
+               (not (editorconfig--is-a-mode-p major-mode
+                                               mode)))
+      (if (fboundp mode)
+          (funcall mode)
+        (display-warning :error (format "Major-mode `%S' not found"
+                                        mode))
+        nil))))
+
 (defun editorconfig-call-editorconfig-exec ()
   "Call EditorConfig core and return output."
   (let ((filename (buffer-file-name)))
@@ -471,6 +508,7 @@ applies available properties."
               (editorconfig-set-trailing-nl (gethash 'insert_final_newline props))
               (editorconfig-set-trailing-ws (gethash 'trim_trailing_whitespace props))
               (editorconfig-set-line-length (gethash 'max_line_length props))
+              (editorconfig-set-major-mode (gethash 'file_type_emacs props))
               (condition-case err
                   (run-hook-with-args 'editorconfig-custom-hooks props)
                 (error
@@ -497,6 +535,15 @@ in `editorconfig-exclude-modes'."
                            finally return nil)))
     (editorconfig-apply)))
 
+(defun editorconfig-format-buffer()
+  "Format buffer according to .editorconfig indent_style and indent_width"
+  (interactive)
+  (if (string= (gethash 'indent_style editorconfig-properties-hash) "tab")
+      (tabify (point-min) (point-max)))
+  (if (string= (gethash 'indent_style editorconfig-properties-hash) "space")
+      (untabify (point-min) (point-max)))
+  (indent-region (point-min) (point-max)))
+
 
 ;;;###autoload
 (define-minor-mode editorconfig-mode
@@ -505,8 +552,10 @@ When enabled EditorConfig properties will be applied to buffers
 when first visiting files or changing major modes if the major
 mode is not listed in `editorconfig-exclude-modes'."
   :global t
-  :lighter " EditorConfig"
-  (dolist (hook '(after-change-major-mode-hook))
+  :lighter editorconfig-mode-lighter
+  ;; See https://github.com/editorconfig/editorconfig-emacs/issues/141 for why
+  ;; not `after-change-major-mode-hook'
+  (dolist (hook '(change-major-mode-after-body-hook))
     (if editorconfig-mode
         (add-hook hook 'editorconfig-mode-apply)
       (remove-hook hook 'editorconfig-mode-apply))))
