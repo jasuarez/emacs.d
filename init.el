@@ -13,9 +13,27 @@
  '(fill-column 80)
  '(package-selected-packages
    (quote
-    (clang-format editorconfig zenburn-theme yaml-mode xcscope package-utils multiple-cursors markdown-mode iedit highlight-current-line google-c-style glsl-mode gist fpaste dockerfile-mode company column-enforce-mode)))
+    (flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope package-utils multiple-cursors markdown-mode iedit highlight-current-line google-c-style glsl-mode gist fpaste dockerfile-mode company column-enforce-mode)))
  '(paren-set-mode (quote sexp))
- '(safe-local-variable-values (quote ((js-indent-level . 4))))
+ '(safe-local-variable-values
+   (quote
+    ((whitespace-line-column . 79)
+     (eval ignore-errors
+           (require
+            (quote whitespace))
+           (whitespace-mode 1))
+     (whitespace-style face indentation)
+     (eval progn
+           (c-set-offset
+            (quote case-label)
+            (quote 0))
+           (c-set-offset
+            (quote innamespace)
+            (quote 0))
+           (c-set-offset
+            (quote inline-open)
+            (quote 0)))
+     (js-indent-level . 4))))
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil))
