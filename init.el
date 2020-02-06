@@ -90,9 +90,18 @@
 ;; use zenburn theme
 (require 'zenburn-theme)
 
+;; use projectile
+(require 'projectile)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
 ;; use Helm
 (require 'helm-config)
 (helm-mode 1)
+
+(require 'helm-projectile)
+(helm-projectile-on)
+(setq projectile-completion-system 'helm)
 
 ;; highlight current line
 (global-hl-line-mode 1)
