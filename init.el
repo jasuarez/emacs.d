@@ -13,7 +13,7 @@
  '(fill-column 80)
  '(package-selected-packages
    (quote
-    (flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope package-utils multiple-cursors markdown-mode iedit highlight-current-line google-c-style glsl-mode gist fpaste dockerfile-mode company column-enforce-mode)))
+    (helm-lsp ccls helm-projectile projectile docker-tramp helm-tramp flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope package-utils multiple-cursors markdown-mode iedit highlight-current-line google-c-style glsl-mode gist fpaste dockerfile-mode company column-enforce-mode)))
  '(paren-set-mode (quote sexp))
  '(safe-local-variable-values
    (quote
@@ -116,8 +116,17 @@
             ;; code indexer
             (require 'xcscope)
             (cscope-minor-mode)
-
+            (lsp)
             ;; show trailing whitespaces
             (setq show-trailing-whitespace t)
             )
           )
+
+(require 'lsp-mode)
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-tramp-connection "/usr/bin/clangd")
+                  :major-modes '(c-mode c++-mode)
+                  :remote? t
+                  :server-id 'clangd-remote
+                  )
+ )
