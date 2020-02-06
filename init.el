@@ -13,7 +13,7 @@
  '(fill-column 80)
  '(package-selected-packages
    (quote
-    (helm-lsp ccls helm-projectile projectile docker-tramp helm-tramp flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope package-utils multiple-cursors markdown-mode iedit highlight-current-line google-c-style glsl-mode gist fpaste dockerfile-mode company column-enforce-mode)))
+    (helm-lsp ccls helm-projectile projectile docker-tramp helm-tramp flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope multiple-cursors markdown-mode iedit google-c-style glsl-mode gist dockerfile-mode company column-enforce-mode)))
  '(paren-set-mode (quote sexp))
  '(safe-local-variable-values
    (quote
@@ -65,7 +65,6 @@
 
 ;; add repositories
 (package-initialize)
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 (install-packages)
@@ -92,10 +91,8 @@
 (require 'zenburn-theme)
 
 ;; highlight current line
-(require 'highlight-current-line)
-(highlight-current-line-on t)
-(highlight-current-line-set-bg-color "gray30")
-(highlight-current-line-whole-line-on t)
+(global-hl-line-mode 1)
+(set-face-background hl-line-face "gray30")
 
 ;; active 'Which Function' mode
 (which-function-mode t)
