@@ -4,5 +4,6 @@ To use them:
 
 ```
 git clone --recursive https://github.com/jasuarez/emacs.d ~/.emacs.d
-emacs -batch -eval '(byte-recompile-directory "~/.emacs.d" 0)'
-emacs -batch -u $USER -f package-utils-upgrade-all
+```
+
+Packages will be installed the first time Emacs is run.

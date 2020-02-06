@@ -38,6 +38,16 @@
  '(tool-bar-mode nil)
  '(tooltip-mode nil))
 
+(defun install-packages ()
+  "Install all required packages."
+  (interactive)
+  (unless package-archive-contents
+    (package-refresh-contents))
+  (dolist (package package-selected-packages)
+    (unless (package-installed-p package)
+      (package-install package))))
+
+
 ;; custom faces
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -57,6 +67,8 @@
 (package-initialize)
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+
+(install-packages)
 
 ;; no backup files
 (setq make-backup-files nil)
