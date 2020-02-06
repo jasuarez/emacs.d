@@ -13,7 +13,7 @@
  '(fill-column 80)
  '(package-selected-packages
    (quote
-    (helm helm-lsp ccls helm-projectile projectile docker-tramp helm-tramp flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope multiple-cursors markdown-mode iedit google-c-style glsl-mode gist dockerfile-mode company column-enforce-mode)))
+    (lsp-ui helm helm-lsp ccls helm-projectile projectile docker-tramp helm-tramp flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope multiple-cursors markdown-mode iedit google-c-style glsl-mode gist dockerfile-mode company column-enforce-mode)))
  '(paren-set-mode (quote sexp))
  '(safe-local-variable-values
    (quote
@@ -144,11 +144,19 @@
             )
           )
 
+(require 'ccls)
 (require 'lsp-mode)
+(setq lsp-file-watch-threshold 2000)
+(setq lsp-enable-file-watchers nil)
 (lsp-register-client
- (make-lsp-client :new-connection (lsp-tramp-connection "/usr/bin/clangd")
+ (make-lsp-client :new-connection (lsp-tramp-connection "/usr/bin/ccls")
                   :major-modes '(c-mode c++-mode)
                   :remote? t
-                  :server-id 'clangd-remote
+                  :server-id 'ccls-remote
                   )
  )
+(require 'lsp-ui)
+(setq lsp-ui-doc-enable t)
+(setq lsp-ui-doc-header t)
+(setq lsp-ui-doc-include-signature t)
+(setq lsp-ui-doc-position 'top)
