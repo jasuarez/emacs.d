@@ -13,7 +13,7 @@
  '(fill-column 80)
  '(package-selected-packages
    (quote
-    (magit company-lsp lsp-ui helm helm-lsp ccls helm-projectile projectile docker-tramp helm-tramp flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope multiple-cursors markdown-mode iedit google-c-style glsl-mode gist dockerfile-mode company column-enforce-mode)))
+    (pdf-tools magit company-lsp lsp-ui helm helm-lsp ccls helm-projectile projectile docker-tramp helm-tramp flycheck clang-format editorconfig zenburn-theme yaml-mode xcscope multiple-cursors markdown-mode iedit google-c-style glsl-mode gist dockerfile-mode company column-enforce-mode)))
  '(paren-set-mode (quote sexp))
  '(safe-local-variable-values
    (quote
@@ -68,6 +68,7 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 (install-packages)
+(pdf-tools-install)
 
 ;; no backup files
 (setq make-backup-files nil)
