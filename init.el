@@ -114,6 +114,9 @@
 ;; active iedit mode
 (require 'iedit)
 
+;; active editor config
+(editorconfig-mode 1)
+
 ;; active company mode
 (require 'company)
 (global-company-mode 1)
