@@ -88,7 +88,7 @@
 (mouse-avoidance-mode 'cat-and-mouse)
 
 ;; use zenburn theme
-(require 'zenburn-theme)
+(load-theme 'zenburn t)
 
 ;; use projectile
 (require 'projectile)
