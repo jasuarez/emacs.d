@@ -28,6 +28,15 @@
 ;; Major mode for editing Docker's Dockerfiles
 (use-package dockerfile-mode)
 
+;; Manage and navigate projects in Emacs easily
+(use-package projectile
+  :config
+  (projectile-mode +1)
+  :custom
+  (projectile-indexing-method 'hybrid)
+  :bind-keymap
+  ("C-c p" . projectile-command-map))
+
 ;; Major mode for editing YAML files
 (use-package yaml-mode
   :mode "\\.yml\\'")
