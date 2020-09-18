@@ -28,6 +28,10 @@
 ;; Major mode for editing Docker's Dockerfiles
 (use-package dockerfile-mode)
 
+;; Major mode for editing YAML files
+(use-package yaml-mode
+  :mode "\\.yml\\'")
+
 ;; A low contrast color theme for Emacs
 (use-package zenburn-theme
   :config
