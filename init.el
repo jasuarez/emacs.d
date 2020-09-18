@@ -24,3 +24,8 @@
   (require 'use-package)
   (require 'use-package-ensure)
   (setq use-package-always-ensure t))
+
+;; A low contrast color theme for Emacs
+(use-package zenburn-theme
+  :config
+  (load-theme 'zenburn t))
