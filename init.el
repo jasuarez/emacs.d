@@ -25,6 +25,9 @@
   (require 'use-package-ensure)
   (setq use-package-always-ensure t))
 
+;; Major mode for editing Docker's Dockerfiles
+(use-package dockerfile-mode)
+
 ;; A low contrast color theme for Emacs
 (use-package zenburn-theme
   :config
