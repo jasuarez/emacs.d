@@ -1,3 +1,5 @@
+;;; init.el --- Emacs configuration file -*- lexical-binding: t -*-
+
 ;; No splash message
 (setq inhibit-splash-screen t)
 
