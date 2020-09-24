@@ -52,6 +52,14 @@
   :bind-keymap
   ("C-c p" . projectile-command-map))
 
+;; Major mode for editing Twiki pages
+(use-package twiki
+  :quelpa
+  (twiki
+     :fetcher github
+     :repo "christopherjwhite/emacs-twiki-mode")
+  :mode ("\\.twiki\\'" . twiki-mode))
+
 ;; Major mode for editing YAML files
 (use-package yaml-mode
   :mode "\\.yml\\'")
