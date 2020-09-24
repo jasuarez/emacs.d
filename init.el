@@ -27,6 +27,12 @@
   (require 'use-package-ensure)
   (setq use-package-always-ensure t))
 
+;; Quelpa handler for use-package
+(use-package quelpa-use-package
+  :init
+  (setq quelpa-update-melpa-p nil)
+  (setq quelpa-self-upgrade-p nil))
+
 ;; TRAMP integration for docker containers
 ;; Use podman instead of docker
 
