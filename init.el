@@ -43,6 +43,9 @@
 ;; Major mode for editing Docker's Dockerfiles
 (use-package dockerfile-mode)
 
+;; Org Twiki and Foswiki export
+(use-package ox-twiki)
+
 ;; Manage and navigate projects in Emacs easily
 (use-package projectile
   :config
