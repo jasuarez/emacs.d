@@ -43,6 +43,11 @@
 ;; Major mode for editing Docker's Dockerfiles
 (use-package dockerfile-mode)
 
+;; EditorConfig Emacs plugin
+(use-package editorconfig
+  :config
+  (editorconfig-mode 1))
+
 ;; Org Twiki and Foswiki export
 (use-package ox-twiki)
 
