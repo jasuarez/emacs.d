@@ -51,6 +51,9 @@
   :config
   (editorconfig-mode 1))
 
+;; Major mode for the Meson build system files
+(use-package meson-mode)
+
 ;; Org Twiki and Foswiki export
 (use-package ox-twiki)
 
