@@ -51,6 +51,17 @@
   :config
   (editorconfig-mode 1))
 
+;; Define and query search engines from within Emacs
+(use-package engine-mode
+  :config
+  (engine-mode t)
+  (defengine github
+    "https://github.com/search?q=%s&type=code"
+    :keybinding "g")
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d"))
+
 ;; Major mode for the Meson build system files
 (use-package meson-mode)
 
