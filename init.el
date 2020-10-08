@@ -66,6 +66,10 @@
     "https://duckduckgo.com/?q=%s"
     :keybinding "d"))
 
+;; Major mode for Markdown-formatted text
+(use-package markdown-mode
+  :mode "\\.md\\'")
+
 ;; Major mode for the Meson build system files
 (use-package meson-mode)
 
