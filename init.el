@@ -36,6 +36,10 @@
   (setq quelpa-update-melpa-p nil)
   (setq quelpa-self-upgrade-p nil))
 
+;; Major-mode for editing CMake sources
+(use-package cmake-mode
+  :mode "\\.cmake\\'")
+
 ;; TRAMP integration for docker containers
 ;; Use podman instead of docker
 
