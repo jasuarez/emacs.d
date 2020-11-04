@@ -98,6 +98,15 @@
   (smartparens-global-mode t)
   (show-smartparens-global-mode t))
 
+;; A tree style file explorer package
+(use-package treemacs
+  :bind
+  (("<f8>" . treemacs)))
+
+;;Projectile integration for treemacs
+(use-package treemacs-projectile
+  :after projectile treemacs)
+
 ;; Major mode for editing Twiki pages
 (use-package twiki
   :quelpa
