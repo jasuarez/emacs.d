@@ -11,8 +11,7 @@
 
 ;; Store Customs in different place
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file))
+(load custom-file 'noerror)
 
 ;; Install use-package if not already installed
 (require 'package)
