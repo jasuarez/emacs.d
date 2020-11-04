@@ -90,6 +90,14 @@
   :bind-keymap
   ("C-c p" . projectile-command-map))
 
+;; Automatic insertion, wrapping and paredit-like navigation with user
+;; defined pairs
+(use-package smartparens
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode t)
+  (show-smartparens-global-mode t))
+
 ;; Major mode for editing Twiki pages
 (use-package twiki
   :quelpa
