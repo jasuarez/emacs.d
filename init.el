@@ -9,6 +9,9 @@
 ;; No toolbar
 (progn (if (fboundp 'tool-bar-mode) (tool-bar-mode -1)))
 
+;; Show column number
+(column-number-mode 1)
+
 ;; Store Customs in different place
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'noerror)
