@@ -12,6 +12,9 @@
 ;; Show column number
 (column-number-mode 1)
 
+;; Highlight current line
+(global-hl-line-mode 1)
+
 ;; Store Customs in different place
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'noerror)
