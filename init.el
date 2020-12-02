@@ -100,6 +100,11 @@
   :bind
   (("C-c c" . org-capture)))
 
+;; Pretiffy headings and plain lists in Org mode
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode))
+
 ;; Org Twiki and Foswiki export
 (use-package ox-twiki)
 
