@@ -122,7 +122,19 @@
   :hook (org-mode . org-superstar-mode))
 
 ;; Org Twiki and Foswiki export
-(use-package ox-twiki)
+;; Add function that fits better with the format we need for reports
+(use-package ox-twiki
+  :after org
+  :config
+  (defun org-twiki-export-report ()
+    (interactive)
+    (org-twiki-export-as-twiki)
+    (goto-char (point-min))
+    (kill-whole-line)
+    (kill-whole-line)
+    (while (search-forward "---+" nil t)
+      (replace-match "--"))
+    (goto-char (point-min))))
 
 ;; Manage and navigate projects in Emacs easily
 (use-package projectile
