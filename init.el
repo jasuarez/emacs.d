@@ -100,6 +100,22 @@
   :bind
   (("C-c c" . org-capture)))
 
+;; A simple org-mode based journaling mode
+(use-package org-journal
+  :config
+  (setq org-journal-dir "~/Misc/journal")
+  (setq org-journal-file-type 'weekly)
+  (setq org-journal-file-format "%Y/w%V.org")
+  (setq org-journal-date-format "Main.JuanSuarez - %d %b %Y")
+  (setq org-journal-time-format "")
+  (setq org-journal-time-prefix "- ")
+  (setq org-journal-file-header
+	(concat
+	 "#+LINK: mesa_commit https://gitlab.freedesktop.org/mesa/mesa/-/commit/\n"
+	 "#+LINK: mesa_issue  https://gitlab.freedesktop.org/mesa/mesa/-/issues/\n"
+	 "#+LINK: mesa_mr     https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/\n"
+	 "\n")))
+
 ;; Pretiffy headings and plain lists in Org mode
 (use-package org-superstar
   :after org
