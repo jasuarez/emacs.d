@@ -19,6 +19,9 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'noerror)
 
+;; Enable Ido mode (Interactively DO things)
+(ido-mode 1)
+
 ;; Install use-package if not already installed
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
