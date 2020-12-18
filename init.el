@@ -22,6 +22,9 @@
 ;; Enable Ido mode (Interactively DO things)
 (ido-mode 1)
 
+;; Enable Which Function Mode
+(which-function-mode 1)
+
 ;; Install use-package if not already installed
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
