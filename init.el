@@ -47,6 +47,9 @@
   (setq quelpa-update-melpa-p nil)
   (setq quelpa-self-upgrade-p nil))
 
+;; Diminished modes are minor modes with no modeline display
+(use-package diminish)
+
 ;; Major-mode for editing CMake sources
 (use-package cmake-mode
   :mode "\\.cmake\\'")
@@ -63,6 +66,7 @@
 
 ;; EditorConfig Emacs plugin
 (use-package editorconfig
+  :diminish "EC"
   :config
   (editorconfig-mode 1))
 
