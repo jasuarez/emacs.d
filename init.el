@@ -180,6 +180,10 @@
 (use-package yaml-mode
   :mode "\\.yml\\'")
 
+(use-package yasnippet
+  :config
+  (yas-global-mode t))
+
 ;; A low contrast color theme for Emacs
 (use-package zenburn-theme
   :config
