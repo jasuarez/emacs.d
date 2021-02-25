@@ -56,7 +56,6 @@
 
 ;; TRAMP integration for docker containers
 ;; Use podman instead of docker
-
 (use-package docker-tramp
   :custom
   (docker-tramp-docker-executable "podman"))
