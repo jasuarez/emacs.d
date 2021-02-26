@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mesa issue
+# key: issue 
+# --
+[[mesa_issue:${1:issue}][#$1 "${2:title}"]${0:$$(insert "]")}

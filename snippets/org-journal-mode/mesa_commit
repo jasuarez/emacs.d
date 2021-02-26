@@ -1,0 +1,6 @@
+
+# -*- mode: snippet -*-
+# name: mesa commit
+# key: commit
+# --
+[[mesa_commit:${1:commit}][$1 ("${2:description})"]${0:$$(insert "]")}

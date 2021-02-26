@@ -1,0 +1,5 @@
+si# -*- mode: snippet -*-
+# name: mesa merge request
+# key: mr
+# --
+[[mesa_mr:${1:mr}][!$1 "${2:title}"]${0:$$(insert "]")}
