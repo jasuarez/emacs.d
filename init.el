@@ -25,6 +25,9 @@
 ;; Enable Which Function Mode
 (which-function-mode 1)
 
+;; Shortkey to comment region
+(global-set-key (kbd "C-c C-c") 'comment-region)
+
 ;; Install use-package if not already installed
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
