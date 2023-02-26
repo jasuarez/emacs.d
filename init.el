@@ -103,6 +103,7 @@
   (setq org-agenda-files (list org-directory))
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
+  (setq org-export-backends '(ascii html md odt))
   (setq org-capture-templates
 	'(("t" "Todo [Inbox]" entry
 	   (file "~/Misc/orgfiles/inbox.org")
@@ -121,14 +122,17 @@
   (setq org-journal-dir "~/Misc/journal")
   (setq org-journal-file-type 'weekly)
   (setq org-journal-file-format "%Y/w%V.org")
-  (setq org-journal-date-format "Main.JuanSuarez - %d %b %Y")
+  (setq org-journal-date-format "%A (%d %b %Y)")
   (setq org-journal-time-format "")
   (setq org-journal-time-prefix "- ")
   (setq org-journal-file-header
 	(concat
+         "#+Title: Week %V\n"
+         "#+OPTIONS: toc:nil\n"
 	 "#+LINK: mesa_commit https://gitlab.freedesktop.org/mesa/mesa/-/commit/\n"
 	 "#+LINK: mesa_issue  https://gitlab.freedesktop.org/mesa/mesa/-/issues/\n"
 	 "#+LINK: mesa_mr     https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/\n"
+         "\n"
 	 "\n")))
 
 ;; Pretiffy headings and plain lists in Org mode
