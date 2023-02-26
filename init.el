@@ -28,6 +28,9 @@
 ;; Wrap lines
 (global-visual-line-mode 1)
 
+;; Calendar starts on Moday
+(setq calendar-week-start-day 1)
+
 ;; Shortkey to comment region
 (global-set-key (kbd "C-c C-c") 'comment-region)
 
