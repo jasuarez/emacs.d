@@ -25,6 +25,9 @@
 ;; Enable Which Function Mode
 (which-function-mode 1)
 
+;; Wrap lines
+(global-visual-line-mode 1)
+
 ;; Shortkey to comment region
 (global-set-key (kbd "C-c C-c") 'comment-region)
 
