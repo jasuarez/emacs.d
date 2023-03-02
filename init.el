@@ -129,11 +129,42 @@
         (concat
          "#+Title: Week %V\n"
          "#+OPTIONS: toc:nil\n"
-         "#+LINK: mesa_commit https://gitlab.freedesktop.org/mesa/mesa/-/commit/\n"
-         "#+LINK: mesa_issue  https://gitlab.freedesktop.org/mesa/mesa/-/issues/\n"
-         "#+LINK: mesa_mr     https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/\n"
          "\n"
          "\n")))
+
+;; Insert org-mode links from the clipboard
+(use-package org-cliplink
+  :after org
+  :config
+  (progn
+    (defun org-cliplink-gh ()
+      (interactive)
+      (org-cliplink-insert-transformed-title
+       (org-cliplink-clipboard-content)
+       (lambda (url title)
+         (let* ((parsed-url (url-generic-parse-url url))
+                (clean-title
+                 (cond
+                  ((string-match "\\([^·]*\\) · Issue #\\([0-9]+\\) · " title)   ; GitHub Issue
+                   (concat "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
+                  ((string-match "\\([^·]*\\) by [^·]+ · Pull Request #\\([0-9]+\\) · " title)   ; GitHub Pull Request
+                   (concat "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
+                  ((string-match "\\([^·]*\\) · [^@]*@\\([^·]*\\) · " title)   ; GitHub Commit
+                   (concat (match-string 2 title) " (\"" (match-string 1 title) "\")"))
+                  ((string-match "\\([^(]*\\) (#\\([0-9a-z]+\\)) · Issues" title)   ; GitLab Issue
+                   (concat "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
+                  ((string-match "\\([^(]*\\) (!\\([0-9a-z]+\\)) · Merge requests" title)   ; GitLab Merge Request
+                   (concat "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
+                  ((string-match "\\([^(]*\\) (\\([0-9a-z]+\\)) · Commits" title)   ; GitLab Commit
+                   (concat (match-string 2 title) " (\"" (match-string 1 title) "\")"))
+                  (t title)
+                  )))
+           ;; forward the title to the default org-cliplink transformer
+           (org-cliplink-org-mode-link-transformer url clean-title))))))
+  :bind
+  (("C-c C-x l" . org-cliplink-gh)))
+
+
 
 ;; Pretiffy headings and plain lists in Org mode
 (use-package org-superstar
