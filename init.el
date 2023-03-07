@@ -164,12 +164,10 @@
   :bind
   (("C-c C-x l" . org-cliplink-gh)))
 
-
-
-;; Pretiffy headings and plain lists in Org mode
-(use-package org-superstar
+;; Modern looks for Org
+(use-package org-modern
   :after org
-  :hook (org-mode . org-superstar-mode))
+  :hook (org-mode . org-modern-mode))
 
 ;; Org Twiki and Foswiki export
 ;; Add function that fits better with the format we need for reports
