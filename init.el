@@ -184,6 +184,17 @@
       (replace-match "--"))
     (goto-char (point-min))))
 
+;; Adds document titles to Markdown files generated with ox-md and derivatives
+(use-package ox-md-title
+  :after org
+  :quelpa
+  (ox-md-title
+   :fetcher github
+   :repo "jeffkreeftmeijer/ox-md-title.el")
+  :config
+  (org-md-title-add)
+  (setq org-md-title t))
+
 ;; Manage and navigate projects in Emacs easily
 (use-package projectile
   :config
