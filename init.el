@@ -128,7 +128,7 @@
   (setq org-journal-file-header
         (concat
          "#+Title: Week %V\n"
-         "#+OPTIONS: toc:nil\n"
+         "#+OPTIONS: toc:nil ^:{}\n"
          "\n"
          "\n")))
 
