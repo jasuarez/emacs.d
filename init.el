@@ -250,6 +250,11 @@
   :config
   (load-theme 'zenburn t))
 
+;; Better experience with icons for ivy
+(use-package all-the-icons-ivy-rich
+  :config
+  (all-the-icons-ivy-rich-mode 1))
+
 ;; More friendly display transformer for ivy
 (use-package ivy-rich
   :config
