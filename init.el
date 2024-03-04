@@ -19,8 +19,6 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'noerror)
 
-;; Enable Ido mode (Interactively DO things)
-(ido-mode 1)
 
 ;; Enable Which Function Mode
 (which-function-mode 1)
