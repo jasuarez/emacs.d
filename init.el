@@ -249,3 +249,8 @@
 (use-package zenburn-theme
   :config
   (load-theme 'zenburn t))
+
+;; More friendly display transformer for ivy
+(use-package ivy-rich
+  :config
+  (ivy-rich-mode 1))
