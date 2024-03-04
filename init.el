@@ -69,6 +69,12 @@
   :config
   (ivy-mode 1))
 
+;; Various completion functions using Ivy
+(use-package counsel
+  :after ivy
+  :config
+  (counsel-mode 1))
+
 ;; EditorConfig Emacs plugin
 (use-package editorconfig
   :diminish "EC"
