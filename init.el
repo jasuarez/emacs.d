@@ -64,6 +64,11 @@
 ;; Major mode for editing Docker's Dockerfiles
 (use-package dockerfile-mode)
 
+;; Incremental Vertical completYon
+(use-package ivy
+  :config
+  (ivy-mode 1))
+
 ;; EditorConfig Emacs plugin
 (use-package editorconfig
   :diminish "EC"
