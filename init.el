@@ -207,6 +207,11 @@
   :bind-keymap
   ("C-c p" . projectile-command-map))
 
+;; Ivy integration for Projectile
+(use-package counsel-projectile
+  :config
+  (counsel-projectile-mode 1))
+
 ;; Automatic insertion, wrapping and paredit-like navigation with user
 ;; defined pairs
 (use-package smartparens
