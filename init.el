@@ -275,3 +275,8 @@
 (use-package ivy-rich
   :config
   (ivy-rich-mode 1))
+
+;; Better sorting and filtering
+(use-package ivy-prescient
+  :config
+  (ivy-prescient-mode 1))
