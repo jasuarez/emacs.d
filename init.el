@@ -122,7 +122,7 @@
 ;; A simple org-mode based journaling mode
 (use-package org-journal
   :config
-  (setq org-journal-dir "~/Misc/journal")
+  (setq org-journal-dir "~/Misc/orgfiles/journal")
   (setq org-journal-file-type 'weekly)
   (setq org-journal-file-format "%Y/w%V.org")
   (setq org-journal-date-format "%A (%d %b %Y)")
