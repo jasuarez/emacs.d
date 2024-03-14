@@ -140,10 +140,10 @@
   :after org
   :config
   (progn
-    (defun org-cliplink-gh ()
+    (defun org-cliplink-gh (&optional link)
       (interactive)
       (org-cliplink-insert-transformed-title
-       (org-cliplink-clipboard-content)
+       (or link (org-cliplink-clipboard-content))
        (lambda (url title)
          (let* ((parsed-url (url-generic-parse-url url))
                 (clean-title
