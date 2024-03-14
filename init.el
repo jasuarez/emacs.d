@@ -187,6 +187,22 @@
       (replace-match "--"))
     (goto-char (point-min))))
 
+;; A database abstraction layer for Org-mode
+(use-package org-roam
+  :after org
+  :custom
+  (org-roam-directory (file-truename "~/Misc/orgfiles/org-roam"))
+  (org-roam-completion-everywhere t)
+  :config
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  :bind
+  (("C-c n f" . org-roam-node-find)
+   ("C-c n i" . org-roam-node-insert)
+   ("C-c n c" . org-roam-capture)
+   :map org-mode-map
+   ("C-M-i" . completion-at-point)))
+
 ;; Adds document titles to Markdown files generated with ox-md and derivatives
 (use-package ox-md-title
   :after org
