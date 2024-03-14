@@ -66,18 +66,20 @@
 
 ;; Incremental Vertical completYon
 (use-package ivy
+  :diminish
   :config
   (ivy-mode 1))
 
 ;; Various completion functions using Ivy
 (use-package counsel
+  :diminish
   :after ivy
   :config
   (counsel-mode 1))
 
 ;; EditorConfig Emacs plugin
 (use-package editorconfig
-  :diminish "EC"
+  :diminish
   :config
   (editorconfig-mode 1))
 
@@ -216,6 +218,7 @@
 
 ;; Manage and navigate projects in Emacs easily
 (use-package projectile
+  :diminish
   :config
   (projectile-mode +1)
   :custom
