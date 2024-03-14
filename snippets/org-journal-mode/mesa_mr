@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name: mesa merge request
+# name: Mesa merge request
 # key: mr
+# type: command
 # --
-[[mesa_mr:${1:mr}][!$1 "${2:title}"]${0:$$(insert "]")}
+(org-cliplink-gh (concat "https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/" (read-string "Mesa MR:")))

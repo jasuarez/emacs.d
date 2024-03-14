@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-# name: mesa issue
-# key: issue 
+# name: Mesa issue
+# key: issue
+# type: command
 # --
-[[mesa_issue:${1:issue}][#$1 "${2:title}"]${0:$$(insert "]")}
+(org-cliplink-gh (concat "https://gitlab.freedesktop.org/mesa/mesa/-/issues/" (read-string "Mesa issue:")))

@@ -1,6 +1,7 @@
 
 # -*- mode: snippet -*-
-# name: mesa commit
+# name: Mesa commit
 # key: commit
+# type: command
 # --
-[[mesa_commit:${1:commit}][$1 ("${2:description})"]${0:$$(insert "]")}
+(org-cliplink-gh (concat "https://gitlab.freedesktop.org/mesa/mesa/-/commit/" (read-string "Mesa commit:")))
