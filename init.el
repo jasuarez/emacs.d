@@ -123,6 +123,7 @@
 
 ;; A simple org-mode based journaling mode
 (use-package org-journal
+  :after org
   :config
   (setq org-journal-dir "~/Misc/orgfiles/journal")
   (setq org-journal-file-type 'weekly)
@@ -134,8 +135,39 @@
         (concat
          "#+Title: Week %V\n"
          "#+OPTIONS: toc:nil tags:nil ^:{}\n"
+         "#+COLUMNS: %%ITEM(Task) %%CLOCKSUM(Clocked) %%EFFORT(Estimated)\n"
          "\n"
-         "\n")))
+         "\n"))
+  (progn
+    (defun search-effort ()
+      (if (org-entry-get (point) "Effort")
+          (point)
+        (if (org-up-heading-safe)
+            (search-effort)
+          nil)))
+    (defun get-remaining-effort ()
+      (let ((actual-clocked (org-clock-sum-current-item)))
+        (save-excursion
+          (if (search-effort)
+              (org-minutes-to-clocksum-string
+               (- (org-hh:mm-string-to-minutes (org-entry-get (point) "Effort"))
+                  (- (org-clock-sum-current-item) actual-clocked)))
+            nil))))
+    (defun add-derived-effort ()
+      (if (not (org-entry-get (point) "Effort"))
+          (let ((remaining-effort (get-remaining-effort)))
+            (if remaining-effort
+                (progn
+                  (org-entry-put (point) "Effort" remaining-effort)
+                  (org-entry-put (point) "DerivedEffort" "true"))))))
+    (defun remove-derived-effort ()
+      (if (org-entry-get (point) "DerivedEffort")
+          (progn
+            (org-entry-delete (point) "Effort")
+            (org-entry-delete (point) "DerivedEffort")))))
+  :hook
+  ((org-clock-in-prepare . add-derived-effort)
+   (org-clock-in . remove-derived-effort)))
 
 ;; Insert org-mode links from the clipboard
 (use-package org-cliplink
