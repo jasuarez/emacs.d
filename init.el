@@ -139,28 +139,28 @@
          "\n"
          "\n"))
   (progn
-    (defun search-effort ()
+    (defun org-journal-aux/search-effort ()
       (if (org-entry-get (point) "Effort")
           (point)
         (if (org-up-heading-safe)
-            (search-effort)
+            (org-journal-aux/search-effort)
           nil)))
-    (defun get-remaining-effort ()
+    (defun org-journal-aux/get-remaining-effort ()
       (let ((actual-clocked (org-clock-sum-current-item)))
         (save-excursion
-          (if (search-effort)
+          (if (org-journa-aux/search-effort)
               (org-minutes-to-clocksum-string
                (- (org-hh:mm-string-to-minutes (org-entry-get (point) "Effort"))
                   (- (org-clock-sum-current-item) actual-clocked)))
             nil))))
-    (defun add-derived-effort ()
+    (defun org-journal/add-derived-effort ()
       (if (not (org-entry-get (point) "Effort"))
-          (let ((remaining-effort (get-remaining-effort)))
+          (let ((remaining-effort (org-journal-aux/get-remaining-effort)))
             (if remaining-effort
                 (progn
                   (org-entry-put (point) "Effort" remaining-effort)
                   (org-entry-put (point) "DerivedEffort" "true"))))))
-    (defun remove-derived-effort ()
+    (defun org-journal/remove-derived-effort ()
       (if (org-entry-get (point) "DerivedEffort")
           (progn
             (org-entry-delete (point) "Effort")
