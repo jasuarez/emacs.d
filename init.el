@@ -293,6 +293,7 @@
   :mode "\\.yml\\'")
 
 (use-package yasnippet
+  :diminish
   :config
   (yas-global-mode t))
 
