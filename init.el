@@ -164,10 +164,15 @@
       (if (org-entry-get (point) "DerivedEffort")
           (progn
             (org-entry-delete (point) "Effort")
-            (org-entry-delete (point) "DerivedEffort")))))
+            (org-entry-delete (point) "DerivedEffort"))))
+    (defun org-journal/goto-head ()
+      (point-to-register 1)
+      (while (org-up-heading-safe) ()))
+    (defun org-journal/goto-back ()
+      (register-to-point 1)))
   :hook
-  ((org-clock-in-prepare . add-derived-effort)
-   (org-clock-in . remove-derived-effort)))
+  ((org-clock-in-prepare . org-journal/goto-head)
+   (org-clock-in . org-journal/goto-back)))
 
 ;; Insert org-mode links from the clipboard
 (use-package org-cliplink
