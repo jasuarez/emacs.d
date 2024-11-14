@@ -195,7 +195,7 @@
                    (concat (match-string 2 title) " (\"" (match-string 1 title) "\")"))
                   ((string-match "\\([^(]*\\) (#\\([0-9a-z]+\\)) · Issues" title)   ; GitLab Issue
                    (concat "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
-                  ((string-match "\\([^(]*\\) (!\\([0-9a-z]+\\)) · Merge requests" title)   ; GitLab Merge Request
+                  ((string-match "\\(.*\\) (!\\([0-9a-z]+\\)) · Merge requests" title)   ; GitLab Merge Request
                    (concat "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
                   ((string-match "\\([^(]*\\) (\\([0-9a-z]+\\)) · Commits" title)   ; GitLab Commit
                    (concat (match-string 2 title) " (\"" (match-string 1 title) "\")"))
