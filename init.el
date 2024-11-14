@@ -148,7 +148,7 @@
     (defun org-journal-aux/get-remaining-effort ()
       (let ((actual-clocked (org-clock-sum-current-item)))
         (save-excursion
-          (if (org-journa-aux/search-effort)
+          (if (org-journal-aux/search-effort)
               (org-minutes-to-clocksum-string
                (- (org-hh:mm-string-to-minutes (org-entry-get (point) "Effort"))
                   (- (org-clock-sum-current-item) actual-clocked)))
