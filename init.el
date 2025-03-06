@@ -169,7 +169,14 @@
       (point-to-register 1)
       (while (org-up-heading-safe) ()))
     (defun org-journal/goto-back ()
-      (register-to-point 1)))
+      (register-to-point 1))
+    (defun org-journal/clock-in-current ()
+      (interactive)
+      (let ((org-clock-in-prepare-hook '(org-journal/add-derived-effort))
+            (org-clock-in-hook '(org-journal/remove-derived-effort)))
+        (org-clock-in))))
+  :bind
+  (("C-c C-x C-M-i" . org-journal/clock-in-current))
   :hook
   ((org-clock-in-prepare . org-journal/goto-head)
    (org-clock-in . org-journal/goto-back)))
