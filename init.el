@@ -185,6 +185,7 @@
   :hook
   ((org-clock-in-prepare . org-journal/goto-head)
    (org-clock-in . org-journal/goto-back)))
+(global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
 
 ;; Insert org-mode links from the clipboard
 (use-package org-cliplink
