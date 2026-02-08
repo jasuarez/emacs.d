@@ -127,7 +127,7 @@
   :config
   (setq org-journal-dir "~/Misc/orgfiles/journal")
   (setq org-journal-file-type 'weekly)
-  (setq org-journal-file-format "%Y/w%V.org")
+  (setq org-journal-file-format "%Y/w%V_%Y%m%d.org")
   (setq org-journal-date-format "%A (%d %b %Y)")
   (setq org-journal-time-format "")
   (setq org-journal-time-prefix "- ")
