@@ -131,6 +131,7 @@
   (setq org-journal-date-format "%A (%d %b %Y)")
   (setq org-journal-time-format "")
   (setq org-journal-time-prefix "- ")
+  (setq org-journal-carryover-items "")
   (setq org-journal-file-header
         (concat
          "#+Title: Week %V\n"
@@ -179,12 +180,109 @@
       (interactive)
       (let ((org-clock-in-prepare-hook '(org-journal/add-derived-effort))
             (org-clock-in-hook '(org-journal/remove-derived-effort)))
-        (org-clock-in))))
+        (org-clock-in)))
+    (defun org-journal/carryover-todos ()
+      "Carry over items from previous date section to current date section.
+TODO items are moved with full content; no-state items are copied as
+heading only (no body text). DONE items are skipped."
+      (let* ((org-journal-find-file 'find-file)
+             (date-level (save-excursion
+                           (org-back-to-heading t)
+                           (org-outline-level)))
+             output-text
+             seen-positions
+             regions-to-delete)
+        (save-excursion
+          (save-restriction
+            (when (org-journal--open-entry t t)
+              (unless (org-journal--daily-p)
+                (org-narrow-to-subtree))
+              (org-map-entries
+               (lambda ()
+                 (let* ((level (org-outline-level))
+                        (todo-state (org-get-todo-state))
+                        (item-start (point))
+                        (item-end (save-excursion (org-end-of-subtree t t) (point)))
+                        parent-texts)
+                   (cond
+                    ;; Skip the date heading itself
+                    ((<= level date-level) nil)
+                    ;; Skip completed items and their entire subtrees
+                    ((member todo-state org-done-keywords)
+                     (setq org-map-continue-from item-end))
+                    ;; TODO items: move full subtree with parent context
+                    ((equal todo-state "TODO")
+                     (save-excursion
+                       (while (and (org-up-heading-safe)
+                                   (> (org-outline-level) date-level))
+                         (let ((pos (point)))
+                           (unless (member pos seen-positions)
+                             (push pos seen-positions)
+                             (push (buffer-substring-no-properties
+                                    pos
+                                    (save-excursion (outline-next-heading) (point)))
+                                   parent-texts)))))
+                     (push item-start seen-positions)
+                     (push (cons item-start item-end) regions-to-delete)
+                     (setq output-text
+                           (concat output-text
+                                   (apply #'concat (nreverse parent-texts))
+                                   (buffer-substring-no-properties item-start item-end)))
+                     (setq org-map-continue-from item-end))
+                    ;; No state: copy heading+body if has content, move if empty
+                    (t
+                     (let* ((body-start (save-excursion (forward-line 1) (point)))
+                            (has-content (string-match-p "\\S-"
+                                                         (buffer-substring-no-properties
+                                                          body-start item-end))))
+                       (save-excursion
+                         (while (and (org-up-heading-safe)
+                                     (> (org-outline-level) date-level))
+                           (let ((pos (point)))
+                             (unless (member pos seen-positions)
+                               (push pos seen-positions)
+                               (push (buffer-substring-no-properties
+                                      pos
+                                      (save-excursion (outline-next-heading) (point)))
+                                     parent-texts)))))
+                       (push item-start seen-positions)
+                       (if has-content
+                           ;; Has content: copy heading line only, keep full entry in source
+                           (setq output-text
+                                 (concat output-text
+                                         (apply #'concat (nreverse parent-texts))
+                                         (buffer-substring-no-properties item-start (line-end-position))
+                                         "\n"))
+                         ;; Empty: move heading, remove from source
+                         (push (cons item-start item-end) regions-to-delete)
+                         (setq output-text
+                               (concat output-text
+                                       (apply #'concat (nreverse parent-texts))
+                                       (buffer-substring-no-properties item-start (line-end-position))
+                                       "\n"))
+                         (setq org-map-continue-from item-end)))))))
+               nil)
+              (dolist (r (sort regions-to-delete (lambda (a b) (> (car a) (car b)))))
+                (delete-region (car r) (cdr r)))
+              (save-buffer))))
+        (when output-text
+          (save-excursion
+            (org-back-to-heading t)
+            (outline-end-of-subtree)
+            (unless (bolp) (insert "\n"))
+            (insert output-text)))))
+    (defun org-journal/show-current-date (&rest _)
+      "Expand the full current date section after creating a new entry."
+      (save-excursion
+        (while (org-up-heading-safe))
+        (org-show-subtree)))
+    (advice-add 'org-journal-new-entry :after #'org-journal/show-current-date))
   :bind
   (("C-c C-x C-M-i" . org-journal/clock-in-current))
   :hook
   ((org-clock-in-prepare . org-journal/goto-head)
-   (org-clock-in . org-journal/goto-back)))
+   (org-clock-in . org-journal/goto-back)
+   (org-journal-after-header-create . org-journal/carryover-todos)))
 (global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
 
 ;; Insert org-mode links from the clipboard
