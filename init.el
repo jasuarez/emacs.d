@@ -117,6 +117,7 @@
   (setq org-clock-in-resume t)
   (setq org-clock-persist-query-resume nil)
   (setq org-clock-out-remove-zero-time-clocks t)
+  (setq org-startup-indented t)
   (org-clock-persistence-insinuate)
   :bind
   (("C-c c" . org-capture)))
@@ -363,6 +364,15 @@ heading only (no body text). DONE items are skipped."
   :config
   (org-md-title-add)
   (setq org-md-title t))
+
+;; Modern block styling with org-indent.
+(use-package org-modern-indent
+  :quelpa
+  (org-modern-indent
+   :fetcher github
+   :repo "jdtsmith/org-modern-indent")
+  :config
+  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 
 ;; Manage and navigate projects in Emacs easily
 (use-package projectile
