@@ -185,17 +185,22 @@
     (defun org-journal/carryover-todos ()
       "Carry over items from previous date section to current date section.
 TODO items are moved with full content; no-state items are copied as
-heading only (no body text). DONE items are skipped."
+heading only (no body text). DONE items are skipped.
+When the previous entry is in a different file, items are always copied
+instead of moved (source is left unchanged)."
       (let* ((org-journal-find-file 'find-file)
+             (current-file (buffer-file-name))
              (date-level (save-excursion
                            (org-back-to-heading t)
                            (org-outline-level)))
              output-text
              seen-positions
-             regions-to-delete)
+             regions-to-delete
+             different-file)
         (save-excursion
           (save-restriction
             (when (org-journal--open-entry t t)
+              (setq different-file (not (string= (buffer-file-name) current-file)))
               (unless (org-journal--daily-p)
                 (org-narrow-to-subtree))
               (org-map-entries
@@ -212,6 +217,7 @@ heading only (no body text). DONE items are skipped."
                     ((member todo-state org-done-keywords)
                      (setq org-map-continue-from item-end))
                     ;; TODO items: move full subtree with parent context
+                    ;; (copy only if from a different file)
                     ((equal todo-state "TODO")
                      (save-excursion
                        (while (and (org-up-heading-safe)
@@ -224,13 +230,15 @@ heading only (no body text). DONE items are skipped."
                                     (save-excursion (outline-next-heading) (point)))
                                    parent-texts)))))
                      (push item-start seen-positions)
-                     (push (cons item-start item-end) regions-to-delete)
+                     (unless different-file
+                       (push (cons item-start item-end) regions-to-delete))
                      (setq output-text
                            (concat output-text
                                    (apply #'concat (nreverse parent-texts))
                                    (buffer-substring-no-properties item-start item-end)))
                      (setq org-map-continue-from item-end))
                     ;; No state: copy heading+body if has content, move if empty
+                    ;; (always copy if from a different file)
                     (t
                      (let* ((body-start (save-excursion (forward-line 1) (point)))
                             (has-content (string-match-p "\\S-"
@@ -247,14 +255,14 @@ heading only (no body text). DONE items are skipped."
                                       (save-excursion (outline-next-heading) (point)))
                                      parent-texts)))))
                        (push item-start seen-positions)
-                       (if has-content
-                           ;; Has content: copy heading line only, keep full entry in source
+                       (if (or has-content different-file)
+                           ;; Has content or different file: copy heading line only
                            (setq output-text
                                  (concat output-text
                                          (apply #'concat (nreverse parent-texts))
                                          (buffer-substring-no-properties item-start (line-end-position))
                                          "\n"))
-                         ;; Empty: move heading, remove from source
+                         ;; Empty and same file: move heading, remove from source
                          (push (cons item-start item-end) regions-to-delete)
                          (setq output-text
                                (concat output-text
