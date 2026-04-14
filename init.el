@@ -118,6 +118,7 @@
   (setq org-clock-persist-query-resume nil)
   (setq org-clock-out-remove-zero-time-clocks t)
   (setq org-startup-indented t)
+  (setq org-indent-indentation-per-level 1)
   (org-clock-persistence-insinuate)
   :bind
   (("C-c c" . org-capture)))
@@ -136,7 +137,7 @@
   (setq org-journal-file-header
         (concat
          "#+Title: Week %V\n"
-         "#+OPTIONS: toc:nil tags:nil ^:{}\n"
+         "#+OPTIONS: toc:nil tags:nil todo:nil h:2 num:1 ^:{}\n"
          "#+COLUMNS: %%ITEM(Task) %%CLOCKSUM(Clocked) %%EFFORT(Estimated)\n"
          "\n"
          "\n"))
