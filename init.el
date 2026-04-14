@@ -351,7 +351,7 @@ instead of moved (source is left unchanged)."
 (use-package org-roam
   :after org
   :custom
-  (org-roam-directory (file-truename "~/Misc/orgfiles/org-roam"))
+  (org-roam-directory (file-truename "~/Misc/orgfiles/roam"))
   (org-roam-completion-everywhere t)
   :config
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
