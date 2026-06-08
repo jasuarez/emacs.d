@@ -274,6 +274,27 @@ instead of moved (source is left unchanged)."
                nil)
               (dolist (r (sort regions-to-delete (lambda (a b) (> (car a) (car b)))))
                 (delete-region (car r) (cdr r)))
+              (unless (org-journal--daily-p)
+                (org-narrow-to-subtree))
+              (let (empty-found)
+                (setq empty-found t)
+                (while empty-found
+                  (setq empty-found nil)
+                  (org-map-entries
+                   (lambda ()
+                     (let ((level (org-outline-level))
+                           (sub-start (point))
+                           (sub-end (save-excursion (org-end-of-subtree t t) (point))))
+                       (when (and (> level date-level)
+                                  (string-match-p
+                                   "\\`[ \t\n]*\\'"
+                                   (buffer-substring-no-properties
+                                    (save-excursion (forward-line 1) (point))
+                                    sub-end)))
+                         (delete-region sub-start sub-end)
+                         (setq empty-found t
+                               org-map-continue-from sub-start))))
+                   nil)))
               (save-buffer))))
         (when output-text
           (save-excursion
