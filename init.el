@@ -139,6 +139,7 @@
          "#+Title: Week %V\n"
          "#+OPTIONS: toc:nil tags:nil todo:nil h:2 num:1 ^:{}\n"
          "#+COLUMNS: %%ITEM(Task) %%CLOCKSUM(Clocked) %%EFFORT(Estimated)\n"
+         "#+PROPERTY: Olmo 1226\n"
          "\n"
          "\n"))
   (progn
@@ -308,12 +309,15 @@ instead of moved (source is left unchanged)."
         (while (org-up-heading-safe))
         (org-show-subtree)))
     (advice-add 'org-journal-new-entry :after #'org-journal/show-current-date))
+  (defun org-journal/add-default-properties ()
+    (org-set-property "Effort" "6:00"))
   :bind
   (("C-c C-x C-M-i" . org-journal/clock-in-current))
   :hook
   ((org-clock-in-prepare . org-journal/goto-head)
    (org-clock-in . org-journal/goto-back)
-   (org-journal-after-header-create . org-journal/carryover-todos)))
+   (org-journal-after-header-create . org-journal/carryover-todos)
+   (org-journal-after-header-create . org-journal/add-default-properties)))
 (global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
 
 ;; Insert org-mode links from the clipboard
