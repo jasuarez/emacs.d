@@ -309,10 +309,47 @@ instead of moved (source is left unchanged)."
         (while (org-up-heading-safe))
         (org-show-subtree)))
     (advice-add 'org-journal-new-entry :after #'org-journal/show-current-date))
+  (defvar org-journal/gitlab-hostname "gitlab.igalia.com"
+    "GitLab hostname for glab API calls.")
+  (defun org-journal/upload-to-gitlab ()
+    "Export current journal file to Markdown and upload to a GitLab issue note.
+The target is read from the GitLab property (format: ProjectID/IssueIID#NoteID)."
+    (interactive)
+    (require 'ox-md-title)
+    (let ((gitlab-prop (org-entry-get (point-min) "GitLab" t)))
+      (unless gitlab-prop
+        (user-error "No GitLab property found"))
+      (unless (string-match "\\([0-9]+\\)/\\([0-9]+\\)#\\([0-9]+\\)" gitlab-prop)
+        (user-error "GitLab property must be in format ProjectID/IssueIID#NoteID"))
+      (let* ((project-id (match-string 1 gitlab-prop))
+             (issue-iid (match-string 2 gitlab-prop))
+             (note-id (match-string 3 gitlab-prop))
+             (md-content (progn
+                           (org-md-title-add)
+                           (unwind-protect
+                               (org-export-as 'md nil nil nil)
+                             (org-md-title-remove))))
+             (md-clean (string-trim
+                        (replace-regexp-in-string "\n\\{2,\\}" "\n" md-content))))
+        (with-temp-buffer
+          (let ((exit-code
+                 (call-process "flatpak-spawn" nil t nil
+                               "--host"
+                               "glab" "api" "--hostname" org-journal/gitlab-hostname
+                               "-X" "PUT"
+                               (format "projects/%s/issues/%s/notes/%s"
+                                       project-id issue-iid note-id)
+                               "--raw-field" (format "body=%s" md-clean))))
+            (if (zerop exit-code)
+                (message "Uploaded to %s project %s issue %s note %s"
+                         org-journal/gitlab-hostname project-id issue-iid note-id)
+              (error "glab failed (exit %d): %s"
+                     exit-code (buffer-string))))))))
   (defun org-journal/add-default-properties ()
     (org-set-property "Effort" "6:00"))
   :bind
-  (("C-c C-x C-M-i" . org-journal/clock-in-current))
+  (("C-c C-x C-M-u" . org-journal/upload-to-gitlab)
+   ("C-c C-x C-M-i" . org-journal/clock-in-current))
   :hook
   ((org-clock-in-prepare . org-journal/goto-head)
    (org-clock-in . org-journal/goto-back)
