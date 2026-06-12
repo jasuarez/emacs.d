@@ -139,6 +139,7 @@
          "#+Title: Week %V\n"
          "#+OPTIONS: toc:nil tags:nil todo:nil h:2 num:1 ^:{}\n"
          "#+COLUMNS: %%ITEM(Task) %%CLOCKSUM(Clocked) %%EFFORT(Estimated)\n"
+         "#+PROPERTY: GitLab 856/33\n"
          "#+PROPERTY: Olmo 1226\n"
          "\n"
          "\n"))
