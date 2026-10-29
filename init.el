@@ -121,6 +121,69 @@
   (setq org-startup-indented t)
   (setq org-indent-indentation-per-level 1)
   (org-clock-persistence-insinuate)
+  (defun org/remove-clocktables-from-md-export (backend)
+    "Remove clocktable dynamic blocks when exporting to Markdown."
+    (when (org-export-derived-backend-p backend 'md)
+      (org-with-wide-buffer
+       (goto-char (point-min))
+       (while (re-search-forward "^[ \t]*#\\+BEGIN: clocktable\\b" nil t)
+         (let ((beg (match-beginning 0)))
+           (if (re-search-forward "^[ \t]*#\\+END:" nil t)
+               (delete-region beg (min (point-max) (1+ (line-end-position))))
+             (delete-region beg (point-max))))))))
+  (add-hook 'org-export-before-parsing-hook
+            #'org/remove-clocktables-from-md-export)
+  (defun org/clocktable-by-name (ipos tables params)
+    "Clocktable :formatter that sums clocked time per headline name.
+
+Unlike the default formatter, which follows the outline tree, this
+groups every entry by its headline text and sums it, so a category
+that appears under several parents (e.g. \"CE Mentoring\" on Monday
+and Wednesday) is reported once with the combined total.
+
+Categories are grouped at the deepest reported outline level; use
+:maxlevel in the dynamic block to pick it (e.g. :maxlevel 2 to group
+second-level category headings).  The grand total covers ALL of the
+top-level entries (the dailies), and any time clocked directly on a
+top-level heading rather than inside a category is reported in an
+\"Uncategorized\" row so the rows reconcile with the total.  Rows are
+sorted by time, longest first."
+    (let* ((totals (make-hash-table :test 'equal))
+           (order '())
+           (all (apply #'append (mapcar (lambda (tbl) (nth 2 tbl)) tables)))
+           (levels (delq nil (mapcar (lambda (e) (nth 0 e)) all)))
+           (top-level (if levels (apply #'min levels) 1))
+           (group-level (if levels (apply #'max levels) 1))
+           (grand 0)
+           (categorized 0))
+      (dolist (e all)
+        (let ((level (nth 0 e))
+              (headline (nth 1 e))
+              (time (nth 4 e)))
+          ;; The dailies' subtree totals make up the real grand total.
+          (when (= level top-level)
+            (setq grand (+ grand time)))
+          ;; Group and sum the category headings by name.
+          (when (= level group-level)
+            (unless (gethash headline totals)
+              (push headline order))
+            (puthash headline (+ (gethash headline totals 0) time) totals)
+            (setq categorized (+ categorized time)))))
+      (goto-char ipos)
+      (insert "| Category | Time |\n|---\n")
+      (dolist (row (sort (mapcar (lambda (h) (cons h (gethash h totals)))
+                                 (nreverse order))
+                         (lambda (a b) (> (cdr a) (cdr b)))))
+        (insert (format "| %s | %s |\n"
+                        (car row) (org-duration-from-minutes (cdr row)))))
+      (let ((other (- grand categorized)))
+        (when (> other 0)
+          (insert (format "| Uncategorized | %s |\n"
+                          (org-duration-from-minutes other)))))
+      (insert (format "|---\n| *Total* | *%s* |\n"
+                      (org-duration-from-minutes grand)))
+      (goto-char ipos)
+      (org-table-align)))
   :bind
   (("C-c c" . org-capture)))
 
