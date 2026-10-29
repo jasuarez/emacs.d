@@ -21,6 +21,7 @@
 
 
 ;; Enable Which Function Mode
+(setq which-func-modes '(c-mode c++-mode python-mode rust-mode emacs-list-mode))
 (which-function-mode 1)
 
 ;; Wrap lines
