@@ -433,20 +433,25 @@ The target is read from the GitLab property (format: ProjectID/IssueIID#NoteID).
        (or link (org-cliplink-clipboard-content))
        (lambda (url title)
          (let* ((parsed-url (url-generic-parse-url url))
+                ;; GitHub: /owner/repo/...; GitLab: /group/.../project/-/...
+                (path-parts (split-string (car (url-path-and-query parsed-url)) "/" t))
+                (project (or (cadr (member "-" (reverse path-parts)))
+                             (cadr path-parts)
+                             ""))
                 (clean-title
                  (cond
                   ((string-match "\\([^·]*\\) · Issue #\\([0-9]+\\) · " title)   ; GitHub Issue
-                   (concat "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
+                   (concat project "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
                   ((string-match "\\([^·]*\\) by [^·]+ · Pull Request #\\([0-9]+\\) · " title)   ; GitHub Pull Request
-                   (concat "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
+                   (concat project "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
                   ((string-match "\\([^·]*\\) · [^@]*@\\([^·]*\\) · " title)   ; GitHub Commit
-                   (concat (match-string 2 title) " (\"" (match-string 1 title) "\")"))
+                   (concat project "@" (match-string 2 title) " (\"" (match-string 1 title) "\")"))
                   ((string-match "\\([^(]*\\) (#\\([0-9a-z]+\\)) · Issues" title)   ; GitLab Issue
-                   (concat "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
+                   (concat project "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
                   ((string-match "\\(.*\\) (!\\([0-9a-z]+\\)) · Merge requests" title)   ; GitLab Merge Request
-                   (concat "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
+                   (concat project "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
                   ((string-match "\\([^(]*\\) (\\([0-9a-z]+\\)) · Commits" title)   ; GitLab Commit
-                   (concat (match-string 2 title) " (\"" (match-string 1 title) "\")"))
+                   (concat project "@" (match-string 2 title) " (\"" (match-string 1 title) "\")"))
                   (t title)
                   )))
            ;; forward the title to the default org-cliplink transformer
