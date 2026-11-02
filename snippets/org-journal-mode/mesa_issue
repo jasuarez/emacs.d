@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: Mesa issue
-# key: issue
-# type: command
-# --
-(org-cliplink-gh (concat "https://gitlab.freedesktop.org/mesa/mesa/-/issues/" (read-string "Mesa issue:")))

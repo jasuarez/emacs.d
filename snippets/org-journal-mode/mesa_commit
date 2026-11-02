@@ -1,7 +1,0 @@
-
-# -*- mode: snippet -*-
-# name: Mesa commit
-# key: commit
-# type: command
-# --
-(org-cliplink-gh (concat "https://gitlab.freedesktop.org/mesa/mesa/-/commit/" (read-string "Mesa commit:")))

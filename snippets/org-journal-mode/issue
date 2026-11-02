@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: Project issue
+# key: issue
+# type: command
+# --
+;; TAB / S-TAB cycle through the projects, keeping the typed input.
+(let ((projects '(("Mesa" . "https://gitlab.freedesktop.org/mesa/mesa/-/work_items/")
+                  ("Piglit" . "https://gitlab.freedesktop.org/mesa/piglit/-/work_items/")))
+      (index 0)
+      (input "")
+      (step nil)
+      (issue nil)
+      (map (make-sparse-keymap)))
+  (set-keymap-parent map minibuffer-local-map)
+  (define-key map (kbd "TAB") (lambda () (interactive) (setq step 1) (exit-minibuffer)))
+  (define-key map (kbd "<backtab>") (lambda () (interactive) (setq step -1) (exit-minibuffer)))
+  (while (not issue)
+    (setq step nil)
+    (setq input (read-from-minibuffer
+                 (format "%s issue:" (car (nth index projects))) input map))
+    (if step
+        (setq index (mod (+ index step) (length projects)))
+      (setq issue input)))
+  (org-cliplink-gh (concat (cdr (nth index projects)) issue)))

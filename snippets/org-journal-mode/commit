@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: Project commit
+# key: commit
+# type: command
+# --
+;; TAB / S-TAB cycle through the projects, keeping the typed input.
+(let ((projects '(("Mesa" . "https://gitlab.freedesktop.org/mesa/mesa/-/commit/")
+                  ("Piglit" . "https://gitlab.freedesktop.org/mesa/piglit/-/commit/")))
+      (index 0)
+      (input "")
+      (step nil)
+      (commit nil)
+      (map (make-sparse-keymap)))
+  (set-keymap-parent map minibuffer-local-map)
+  (define-key map (kbd "TAB") (lambda () (interactive) (setq step 1) (exit-minibuffer)))
+  (define-key map (kbd "<backtab>") (lambda () (interactive) (setq step -1) (exit-minibuffer)))
+  (while (not commit)
+    (setq step nil)
+    (setq input (read-from-minibuffer
+                 (format "%s commit:" (car (nth index projects))) input map))
+    (if step
+        (setq index (mod (+ index step) (length projects)))
+      (setq commit input)))
+  (org-cliplink-gh (concat (cdr (nth index projects)) commit)))

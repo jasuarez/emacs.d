@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: Mesa merge request
-# key: mr
-# type: command
-# --
-(org-cliplink-gh (concat "https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/" (read-string "Mesa MR:")))
