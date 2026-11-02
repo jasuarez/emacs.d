@@ -440,17 +440,17 @@ The target is read from the GitLab property (format: ProjectID/IssueIID#NoteID).
                              ""))
                 (clean-title
                  (cond
-                  ((string-match "\\([^·]*\\) · Issue #\\([0-9]+\\) · " title)   ; GitHub Issue
+                  ((string-match "^\\(.*\\) · Issue #\\([0-9]+\\) · " title)   ; GitHub Issue
                    (concat project "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
-                  ((string-match "\\([^·]*\\) by [^·]+ · Pull Request #\\([0-9]+\\) · " title)   ; GitHub Pull Request
+                  ((string-match "^\\(.*\\) by [^·]+ · Pull Request #\\([0-9]+\\) · " title)   ; GitHub Pull Request
                    (concat project "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
-                  ((string-match "\\([^·]*\\) · [^@]*@\\([^·]*\\) · " title)   ; GitHub Commit
+                  ((string-match "^\\(.*\\) · [^@·]*@\\([^·]*\\) · " title)   ; GitHub Commit
                    (concat project "@" (match-string 2 title) " (\"" (match-string 1 title) "\")"))
-                  ((string-match "\\([^(]*\\) (#\\([0-9a-z]+\\)) · Issues" title)   ; GitLab Issue
+                  ((string-match "^\\(.*\\) (#\\([0-9a-z]+\\)) · Issues" title)   ; GitLab Issue
                    (concat project "#" (match-string 2 title) " \"" (match-string 1 title) "\""))
                   ((string-match "\\(.*\\) (!\\([0-9a-z]+\\)) · Merge requests" title)   ; GitLab Merge Request
                    (concat project "!" (match-string 2 title) " \"" (match-string 1 title) "\""))
-                  ((string-match "\\([^(]*\\) (\\([0-9a-z]+\\)) · Commits" title)   ; GitLab Commit
+                  ((string-match "^\\(.*\\) (\\([0-9a-z]+\\)) · Commits" title)   ; GitLab Commit
                    (concat project "@" (match-string 2 title) " (\"" (match-string 1 title) "\")"))
                   (t title)
                   )))
