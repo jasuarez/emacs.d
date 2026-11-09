@@ -119,6 +119,17 @@
   (setq org-clock-persist-query-resume nil)
   (setq org-clock-out-remove-zero-time-clocks t)
   (setq org-startup-indented t)
+  ;; Start with everything expanded except property drawers (LOGBOOK etc. stay open)
+  (setq org-startup-folded 'showeverything)
+  (defun org/fold-property-drawers ()
+    "Fold all property drawers in the current buffer."
+    (org-with-wide-buffer
+     (goto-char (point-min))
+     (while (re-search-forward org-property-drawer-re nil t)
+       (save-excursion
+         (goto-char (match-beginning 0))
+         (org-fold-hide-drawer-toggle t)))))
+  (add-hook 'org-mode-hook #'org/fold-property-drawers)
   (setq org-indent-indentation-per-level 1)
   (org-clock-persistence-insinuate)
   (defun org/remove-clocktables-from-md-export (backend)
