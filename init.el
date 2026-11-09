@@ -462,8 +462,75 @@ The target is read from the GitLab property (format: ProjectID/IssueIID#NoteID).
 ;; Modern looks for Org
 (use-package org-modern
   :after org
-  :hook (org-mode . org-modern-mode))
-
+  :hook (org-mode . org-modern-mode)
+  :init
+  ;; Make property drawers compact: smaller and dimmer than regular text,
+  ;; keeping property names and values in different (dimmed) colors.
+  (defface org-modern/property-drawer
+    '((t :height 0.75))
+    "Face applied to whole property drawers, including line ends,
+so the drawer lines also take less vertical space.")
+  ;; These replace Org's faces in the drawer (instead of stacking on them),
+  ;; since `org-property-value' inherits `default' and its absolute height
+  ;; would otherwise win over the smaller drawer height.
+  (defface org-modern/property-marker
+    '((t :inherit (org-modern/property-drawer org-drawer)))
+    "Dimmed face for :PROPERTIES: and :END: lines.")
+  (defface org-modern/property-key
+    '((t :inherit (org-modern/property-drawer org-special-keyword)))
+    "Dimmed face for property names.")
+  (defface org-modern/property-value
+    '((t :inherit (org-modern/property-drawer org-property-value)))
+    "Dimmed face for property values.")
+  (defvar org-modern/property-dim-amount 0.55
+    "Weight of the original color when dimming (1.0 = no dimming).")
+  (defun org-modern/dim-color (face)
+    "Return FACE's foreground blended toward the default background."
+    (require 'color)
+    (let ((fg (color-name-to-rgb (or (face-foreground face nil 'default) "")))
+          (bg (color-name-to-rgb (or (face-background 'default) ""))))
+      (if (and fg bg)
+          (apply #'color-rgb-to-hex
+                 (append (cl-mapcar (lambda (f b)
+                                      (+ (* f org-modern/property-dim-amount)
+                                         (* b (- 1 org-modern/property-dim-amount))))
+                                    fg bg)
+                         '(2)))
+        'unspecified)))
+  (defun org-modern/update-property-faces (&rest _)
+    (when (facep 'org-special-keyword)
+      (dolist (pair '((org-modern/property-marker . org-drawer)
+                      (org-modern/property-key . org-special-keyword)
+                      (org-modern/property-value . org-property-value)))
+        (set-face-attribute (car pair) nil
+                            :foreground (org-modern/dim-color (cdr pair))))))
+  (with-eval-after-load 'org (org-modern/update-property-faces))
+  (add-hook 'enable-theme-functions #'org-modern/update-property-faces)
+  (defun org-modern/match-property-line (limit)
+    "Font-lock matcher for any line belonging to a property drawer.
+Matches line by line, so partial refontification (e.g. after
+folding/unfolding the drawer) keeps the face."
+    (let (found)
+      (while (and (not found)
+                  (re-search-forward "^[ \t]*\\(:[^ \t\n]+:\\)\\(.*\\)\n?" limit t))
+        (save-match-data
+          (save-excursion
+            (goto-char (match-beginning 0))
+            (when (memq (org-element-type (org-element-at-point))
+                        '(property-drawer node-property))
+              (setq found t)))))
+      found))
+  (defun org-modern/compact-properties ()
+    (add-to-list 'org-font-lock-extra-keywords
+                 '(org-modern/match-property-line
+                   (0 'org-modern/property-drawer append)
+                   (1 (if (member (match-string 1) '(":PROPERTIES:" ":END:"))
+                          'org-modern/property-marker
+                        'org-modern/property-key)
+                      t)
+                   (2 'org-modern/property-value t))
+                 t))
+  (add-hook 'org-font-lock-set-keywords-hook #'org-modern/compact-properties))
 ;; Org Twiki and Foswiki export
 ;; Add function that fits better with the format we need for reports
 (use-package ox-twiki
