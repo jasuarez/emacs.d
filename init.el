@@ -198,6 +198,16 @@ sorted by time, longest first."
   :bind
   (("C-c c" . org-capture)))
 
+;; Clock in at a chosen outline level (org-clock-in-level)
+(use-package org-clock-enhanced
+  :after org
+  :quelpa
+  (org-clock-enhanced
+   :fetcher github
+   :repo "jasuarez/org-clock-enhanced")
+  :custom
+  (org-clock-enhanced-inherit-effort t))
+
 ;; A simple org-mode based journaling mode
 (use-package org-journal
   :after org
@@ -219,47 +229,12 @@ sorted by time, longest first."
          "\n"
          "\n"))
   (progn
-    (defun org-journal-aux/search-effort ()
-      (if (org-entry-get (point) "Effort")
-          (point)
-        (if (org-up-heading-safe)
-            (org-journal-aux/search-effort)
-          nil)))
-    (defun org-journal-aux/get-remaining-effort ()
-      (let ((actual-clocked (org-clock-sum-current-item)))
-        (save-excursion
-          (if (org-journal-aux/search-effort)
-              (org-minutes-to-clocksum-string
-               (- (org-hh:mm-string-to-minutes (org-entry-get (point) "Effort"))
-                  (- (org-clock-sum-current-item) actual-clocked)))
-            nil))))
-    (defun org-journal/add-derived-effort ()
-      (if (not (org-entry-get (point) "Effort"))
-          (let ((remaining-effort (org-journal-aux/get-remaining-effort)))
-            (if remaining-effort
-                (progn
-                  (org-entry-put (point) "Effort" remaining-effort)
-                  (org-entry-put (point) "DerivedEffort" "true"))))))
-    (defun org-journal/remove-derived-effort ()
-      (if (org-entry-get (point) "DerivedEffort")
-          (progn
-            (org-entry-delete (point) "Effort")
-            (org-entry-delete (point) "DerivedEffort"))))
-    (defun org-journal/goto-head ()
-      (point-to-register 1)
-      (while (org-up-heading-safe) ()))
-    (defun org-journal/goto-back ()
-      (register-to-point 1))
-    (defun org-journal/clock-on-top ()
+    (defun org/clock-in-day ()
       (interactive)
-      (let ((org-clock-in-prepare-hook '(org-journal/goto-head))
-            (org-clock-in-hook '(org-journal/goto-back)))
-        (org-clock-in)))
-    (defun org-journal/clock-in-current ()
+      (org-clock-in-level 1))
+    (defun org/clock-in-task-type ()
       (interactive)
-      (let ((org-clock-in-prepare-hook '(org-journal/add-derived-effort))
-            (org-clock-in-hook '(org-journal/remove-derived-effort)))
-        (org-clock-in)))
+      (org-clock-in-level 2))
     (defun org-journal/carryover-todos ()
       "Carry over items from previous date section to current date section.
 TODO items are moved with full content; no-state items are copied as
@@ -425,11 +400,11 @@ The target is read from the GitLab property (format: ProjectID/IssueIID#NoteID).
     (org-set-property "Effort" "6:00"))
   :bind
   (("C-c C-x C-M-u" . org-journal/upload-to-gitlab)
-   ("C-c C-x C-M-i" . org-journal/clock-in-current))
+   ("C-c C-x C-M-i" . org/clock-in-task-type)
+   :map org-mode-map
+   ("C-c C-x C-i" . org/clock-in-day))
   :hook
-  ((org-clock-in-prepare . org-journal/goto-head)
-   (org-clock-in . org-journal/goto-back)
-   (org-journal-after-header-create . org-journal/carryover-todos)
+  ((org-journal-after-header-create . org-journal/carryover-todos)
    (org-journal-after-header-create . org-journal/add-default-properties)))
 (global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
 
